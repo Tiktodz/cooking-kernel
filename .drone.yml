@@ -20,7 +20,7 @@ steps:
         from_secret: git
       TOKEN: 
         from_secret: token
-    image: apon77/aosp:latest
+    image: geopd/builder:drone
     name: cooking
     trigger: 
       branch: 

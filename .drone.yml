@@ -1,0 +1,23 @@
+--- 
+clone: 
+  depth: 1
+kind: pipeline
+name: cooking kernel
+steps: 
+  - 
+    commands:
+      - "export git=$GIT"
+      - "export token=$TOKEN"
+      - "git clone --depth=1 https://github.com/wizardprjkt/android_kernel_asus_sdm660 kernel"
+      - "cd kernel"
+      - "curl -s https://raw.githubusercontent.com/Tiktodz/cooking-kernel/main/build.sh | bash"
+    environment: 
+      GIT:
+        from_secret: git
+      TOKEN: 
+        from_secret: token
+    image: apon77/aosp:latest
+    name: cooking
+    trigger: 
+      branch: 
+        - main

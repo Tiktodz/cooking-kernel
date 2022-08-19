@@ -267,7 +267,7 @@ build_kernel() {
 
 	if [ "$PTTG" = 1 ]
  	then
-		tg_post_msg "<b>$KBUILD_BUILD_VERSION CI Build Triggered</b>%0A<b>🐟Docker OS: </b><code>$DISTRO</code>%0A<b>🐧Kernel Version : </b><code>$KERVER</code>%0A<b>🗓️Date : </b><code>$(TZ=Asia/Jakarta date)</code>%0A<b>📱Device : </b><code>$MODEL [$DEVICE]</code>%0A<b>🎭Pipeline Host : </b><code>$KBUILD_BUILD_HOST</code>%0A<b>📀Host Core Count : </b><code>$PROCS</code>%0A<b>💽Compiler Used : </b><code>$KBUILD_COMPILER_STRING</code>%0A<b>🔐Linker : </b><code>$LINKER</code>%0a<b>Branch : </b><code>$CI_BRANCH</code>%0A<b>🔝Top Commit : </b><code>$COMMIT_HEAD</code>%0A<a href='$SERVER_URL'>🔗Link</a>"
+		tg_post_msg "<b>$KBUILD_BUILD_VERSION CI Build Triggered</b>%0A<b>🐟Docker OS: </b><code>$DISTRO</code>%0A<b>🐧Kernel Version : </b><code>$KERVER</code>%0A<b>🗓️Date : </b><code>$(TZ=Asia/Jakarta date)</code>%0A<b>📱Device : </b><code>$MODEL [$DEVICE]</code>%0A<b>🔩Pipeline Host : </b><code>$KBUILD_BUILD_HOST</code>%0A<b>🖥️Host Core Count : </b><code>$PROCS</code>%0A<b>💽Compiler Used : </b><code>$KBUILD_COMPILER_STRING</code>%0A<b>⛓️Linker : </b><code>$LINKER</code>%0a<b>🪤Branch : </b><code>$CI_BRANCH</code>%0A<b>🆙Top Commit : </b><code>$COMMIT_HEAD</code>%0A<a href='$SERVER_URL'>🔗Link</a>"
 	fi
 
 	make O=out $DEFCONFIG

@@ -3,6 +3,10 @@ clone:
   depth: 1
 kind: pipeline
 name: cooking kernel
+
+workspace:
+  path: /drone/src
+
 steps: 
   - 
     commands:
@@ -21,3 +25,5 @@ steps:
     trigger: 
       branch: 
         - main
+      event:
+        - push

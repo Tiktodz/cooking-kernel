@@ -174,7 +174,7 @@ KERVER=$(make kernelversion)
 COMMIT_HEAD=$(git log --oneline -1)
 
 # Set Date 
-DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%T")
+DATE=$(TZ=Asia/Jakarta date +"%Y%m%d")
 
 #Now Its time for other stuffs like cloning, exporting, etc
 
@@ -182,7 +182,7 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%T")
 	echo " "
 	if [ $COMPILER = "gcc" ]
 	then
-		msg "|| Cloning GCC 9.3.0 baremetal ||"
+		msg "|| Cloning GCC 4.9.x ||"
 		git clone --depth=1 https://github.com/KudProject/aarch64-linux-android-4.9.git gcc64
 		git clone --depth=1 https://github.com/KudProject/arm-linux-androideabi-4.9.git gcc32
 		GCC64_DIR=$KERNEL_DIR/gcc64

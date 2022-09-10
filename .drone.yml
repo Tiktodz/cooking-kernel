@@ -22,6 +22,10 @@ steps:
         from_secret: token
     image: geopd/builder:drone
     name: cooking
+    commands:
+    export git=$GIT
+    export token=$TOKEN
+    export TZ=Asia=Shanghai
     trigger: 
       branch: 
         - main

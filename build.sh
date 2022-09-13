@@ -372,10 +372,10 @@ gen_zip() {
 	sed -i "s/message.word=.*/message.word=Rejeky ga akan kemana, yg masih nganggur berbahagialah!/g" anykernel.sh
 	sed -i "s/build.date=.*/build.date=$DATE/g" anykernel.sh
 
-	zip -r [LT]$ZIPNAME-$DEVICE-"$DATE" . -x ".git*" -x "anykernel-real.sh" -x "README.md" -x "*.zip"
+	zip -r $ZIPNAME-$DEVICE-"$DATE" . -x ".git*" -x "anykernel-real.sh" -x "README.md" -x "*.zip"
 
 	## Prepare a final zip variable
-	ZIP_FINAL="[LT]$ZIPNAME-$DEVICE-$DATE"
+	ZIP_FINAL="$ZIPNAME-$DEVICE-$DATE"
 
 	if [ $SIGN = 1 ]
 	then

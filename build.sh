@@ -363,6 +363,15 @@ gen_zip() {
 		mv "$KERNEL_DIR"/out/arch/arm64/boot/dtbo.img AnyKernel3/dtbo.img
 	fi
 	cdir AnyKernel3
+	cp -af anykernel-real.sh anykernel.sh
+	sed -i "s/kernel.string=.*/kernel.string=$ZIPNAME/g" anykernel.sh
+	sed -i "s/kernel.for=.*/kernel.for=$DEVICE/g" anykernel.sh
+	sed -i "s/kernel.compiler=.*/kernel.compiler=$KBUILD_COMPILER_STRING/g" anykernel.sh
+	sed -i "s/kernel.made=.*/kernel.made=@AUTHOR/g" anykernel.sh
+	sed -i "s/kernel.version=.*/kernel.version=$LINUXVER/g" anykernel.sh
+	sed -i "s/message.word=.*/message.word=Rejeky ga akan kemana, yg masih nganggur berbahagialah!/g" anykernel.sh
+	sed -i "s/build.date=.*/build.date=$DATE/g" anykernel.sh
+
 	zip -r $ZIPNAME-$DEVICE-"$DATE" . -x ".git*" -x "README.md" -x "*.zip"
 
 	## Prepare a final zip variable
@@ -394,7 +403,7 @@ build_kernel
 
 if [ $LOG_DEBUG = "1" ]
 then
-	tg_post_build "error.log" "$CHATID" "Debug Mode Logs"
+	tg_post_build "build.log" "$CHATID" "Debug Mode Logs"
 fi
 
 ##----------------*****-----------------------------##

@@ -191,10 +191,10 @@ DATE=$(TZ=Asia/Shanghai date +"%Y%m%d_%H%M")
 	
 	if [ $COMPILER = "clang" ]
 	then
-		msg "|| Cloning Clang-14 ||"
-		git clone --depth=1 https://github.com/Rasenkai/proton-clang.git clang-llvm
+		msg "|| Cloning Clang||"
+		git clone --depth=1 https://github.com/Rasenkai/proton-clang.git clang
 		# Toolchain Directory defaults to clang-llvm
-		TC_DIR=$KERNEL_DIR/clang-llvm
+		TC_DIR=$KERNEL_DIR/clang
 	fi
 
 	msg "|| Cloning Anykernel ||"

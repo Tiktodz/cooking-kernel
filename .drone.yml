@@ -2,32 +2,23 @@
 clone: 
   depth: 1
 kind: pipeline
-name: cooking kernel
-
-workspace:
-  path: /drone/src
-
+name: cooking
 steps: 
   - 
     commands:
       - "export git=$GIT"
       - "export token=$TOKEN"
-      - "git clone --depth=1 https://github.com/Tiktodz/android_kernel_asus_sdm660 -b CLO-r42 kernel"
+      - "export TZ=Asia/Shanghai"
+      - "git clone --depth=1 https://github.com/Tiktodz/kernel_asus_sdm660.git -b master kernel"
       - "cd kernel"
-      - "curl -s https://raw.githubusercontent.com/Tiktodz/cooking-kernel/main/build.sh | bash"
+      - "curl -s https://raw.githubusercontent.com/Tiktodz/cooking-kernel/master/build.sh | bash"
     environment: 
       GIT:
         from_secret: git
       TOKEN: 
         from_secret: token
-    image: geopd/builder:drone
-    name: cooking
-    commands:
-    export git=$GIT
-    export token=$TOKEN
-    export TZ=Asia=Shanghai
+    image: xealea/xea:01
+    name: Xea-Images
     trigger: 
       branch: 
-        - main
-      event:
-        - push
+        - master

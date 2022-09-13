@@ -52,7 +52,7 @@ ZIPNAME="darkonah"
 
 # Build Author
 # Take care, it should be a universal and most probably, case-sensitive
-AUTHOR="Tiktodz"
+AUTHOR="TKTDS"
 
 # Architecture
 ARCH=arm64
@@ -267,7 +267,7 @@ build_kernel() {
 
 	if [ "$PTTG" = 1 ]
  	then
-		tg_post_msg "<b>$KBUILD_BUILD_VERSION CI Build Triggered</b>%0A<b>🐟Docker OS: </b><code>$DISTRO</code>%0A<b>🐧Kernel Version : </b><code>$KERVER</code>%0A<b>🗓️Date : </b><code>$(TZ=Asia/Jakarta date)</code>%0A<b>📱Device : </b><code>$MODEL [$DEVICE]</code>%0A<b>🔩Pipeline Host : </b><code>$KBUILD_BUILD_HOST</code>%0A<b>🖥️Host Core Count : </b><code>$PROCS</code>%0A<b>💽Compiler Used : </b><code>$KBUILD_COMPILER_STRING</code>%0A<b>⛓️Linker : </b><code>$LINKER</code>%0a<b>🪤Branch : </b><code>$CI_BRANCH</code>%0A<b>🆙Top Commit : </b><code>$COMMIT_HEAD</code>%0A<a href='$SERVER_URL'>🔗Link</a>"
+		tg_post_msg "<b>$KBUILD_BUILD_VERSION 🤬 CI Build Triggered</b>%0A<b>🐟Docker OS: </b><code>$DISTRO</code>%0A<b>🐧Kernel Version : </b><code>$KERVER</code>%0A<b>🗓️Date : </b><code>$(TZ=Asia/Jakarta date)</code>%0A<b>📱Device : </b><code>$MODEL [$DEVICE]</code>%0A<b>🔩Pipeline Host : </b><code>$KBUILD_BUILD_HOST</code>%0A<b>🖥️Host Core Count : </b><code>$PROCS</code>%0A<b>💽Compiler Used : </b><code>$KBUILD_COMPILER_STRING</code>%0A<b>⛓️Linker : </b><code>$LINKER</code>%0a<b>🪤Branch : </b><code>$CI_BRANCH</code>%0A<b>🆙Top Commit : </b><code>$COMMIT_HEAD</code>%0A<a href='$SERVER_URL'>🔗Link</a>"
 	fi
 
 	make O=out $DEFCONFIG
@@ -317,7 +317,7 @@ build_kernel() {
 	msg "|| Started Compilation ||"
 	make -kj"$PROCS" O=out \
 		V=$VERBOSE \
-		"${MAKE[@]}" 2>&1 | tee error.log
+		"${MAKE[@]}" 2>&1 | tee build.log
 	if [ $MODULES = "1" ]
 	then
 	    msg "|| Started Compiling Modules ||"
@@ -347,7 +347,7 @@ build_kernel() {
 			else
 			if [ "$PTTG" = 1 ]
  			then
-				tg_post_build "error.log" "*Build failed to compile after $((DIFF / 60)) minute(s) and $((DIFF % 60)) seconds*"
+				tg_post_build "build.log" "*Build failed to compile after $((DIFF / 60)) minute(s) and $((DIFF % 60)) seconds*"
 			fi
 		fi
 	
@@ -368,11 +368,11 @@ gen_zip() {
 	sed -i "s/kernel.for=.*/kernel.for=$DEVICE/g" anykernel.sh
 	sed -i "s/kernel.compiler=.*/kernel.compiler=$KBUILD_COMPILER_STRING/g" anykernel.sh
 	sed -i "s/kernel.made=.*/kernel.made=@AUTHOR/g" anykernel.sh
-	sed -i "s/kernel.version=.*/kernel.version=$LINUXVER/g" anykernel.sh
+	sed -i "s/kernel.version=.*/kernel.version=$KERVER/g" anykernel.sh
 	sed -i "s/message.word=.*/message.word=Rejeky ga akan kemana, yg masih nganggur berbahagialah!/g" anykernel.sh
 	sed -i "s/build.date=.*/build.date=$DATE/g" anykernel.sh
 
-	zip -r $ZIPNAME-$DEVICE-"$DATE" . -x ".git*" -x "README.md" -x "*.zip"
+	zip -r $ZIPNAME-$DEVICE-"$DATE" . -x ".git*" -x "anykernel-real.sh" -x "README.md" -x "*.zip"
 
 	## Prepare a final zip variable
 	ZIP_FINAL="$ZIPNAME-$DEVICE-$DATE"
@@ -383,7 +383,7 @@ gen_zip() {
 		if [ "$PTTG" = 1 ]
  		then
  			msg "|| Signing Zip ||"
-			tg_post_msg "<code>🗝️ Signing Zip file with AOSP keys..</code>"
+			tg_post_msg "<code>🔑 Signing Zip file with AOSP keys..</code>"
  		fi
 		curl -sLo zipsigner-4.0.jar https://github.com/baalajimaestro/AnyKernel3/raw/master/zipsigner-4.0.jar
 		java -jar zipsigner-4.0.jar "$ZIP_FINAL".zip "$ZIP_FINAL"-signed.zip
@@ -392,7 +392,7 @@ gen_zip() {
 
 	if [ "$PTTG" = 1 ]
  	then
-		tg_post_build "$ZIP_FINAL.zip" "🥘 Build took : $((DIFF / 60)) minute(s) and $((DIFF % 60)) second(s)"
+		tg_post_build "$ZIP_FINAL.zip" "🔔 Build took : $((DIFF / 60)) minute(s) and $((DIFF % 60)) second(s)"
 	fi
 	cd ..
 }

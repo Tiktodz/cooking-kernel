@@ -48,7 +48,7 @@ KERNEL_DIR="$(pwd)"
 BASEDIR="$(basename "$KERNEL_DIR")"
 
 # The name of the Kernel, to name the ZIP
-ZIPNAME="EW"
+ZIPNAME="darkonah"
 
 # Build Author
 # Take care, it should be a universal and most probably, case-sensitive
@@ -58,14 +58,14 @@ AUTHOR="Tiktodz"
 ARCH=arm64
 
 # The name of the device for which the kernel is built
-MODEL="Asus Max Pro M1"
+MODEL="Asus Zenfone Max Pro M1"
 
 # The codename of the device
 DEVICE="X00TD"
 
 # The defconfig which should be used. Get it from config.gz from
 # your device or check source
-DEFCONFIG=X00TD_defconfig
+DEFCONFIG=darkonah_defconfig
 
 # Specify compiler. 
 # 'clang' or 'gcc'
@@ -86,7 +86,7 @@ PTTG=1
 	if [ $PTTG = 1 ]
 	then
 		# Set Telegram Chat ID
-		CHATID="-1001200423387"
+		CHATID="-1001783991370"
 	fi
 
 # Generate a full DEFCONFIG prior building. 1 is YES | 0 is NO(default)
@@ -174,7 +174,7 @@ KERVER=$(make kernelversion)
 COMMIT_HEAD=$(git log --oneline -1)
 
 # Set Date 
-DATE=$(TZ=Asia/Jakarta date +"%Y%m%d_%H%M")
+DATE=$(TZ=Asia/Shanghai date +"%Y%m%d_%H%M")
 
 #Now Its time for other stuffs like cloning, exporting, etc
 
@@ -183,8 +183,8 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d_%H%M")
 	if [ $COMPILER = "gcc" ]
 	then
 		msg "|| Cloning GCC 4.9.x ||"
-		git clone --depth=1 https://github.com/KudProject/aarch64-linux-android-4.9.git gcc64
-		git clone --depth=1 https://github.com/KudProject/arm-linux-androideabi-4.9.git gcc32
+		git clone --depth=1 https://github.com/Tiktodz/aarch64-linux-android-4.9.git -b master gcc64
+		git clone --depth=1 https://github.com/Tiktodz/arm-linux-androideabi-4.9.git -b master gcc32
 		GCC64_DIR=$KERNEL_DIR/gcc64
 		GCC32_DIR=$KERNEL_DIR/gcc32
 	fi
@@ -198,7 +198,7 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d_%H%M")
 	fi
 
 	msg "|| Cloning Anykernel ||"
-	git clone --depth 1 --no-single-branch https://github.com/"$AUTHOR"/AnyKernel3.git -b hmp
+	git clone --depth 1 https://github.com/"$AUTHOR"/AnyKernel3.git -b eas
 
 	if [ $BUILD_DTBO = 1 ]
 	then

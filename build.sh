@@ -48,7 +48,7 @@ KERNEL_DIR="$(pwd)"
 BASEDIR="$(basename "$KERNEL_DIR")"
 
 # The name of the Kernel, to name the ZIP
-ZIPNAME="darkonah"
+ZIPNAME="droopy"
 
 # Build Author
 # Take care, it should be a universal and most probably, case-sensitive
@@ -65,7 +65,7 @@ DEVICE="X00TD"
 
 # The defconfig which should be used. Get it from config.gz from
 # your device or check source
-DEFCONFIG=darkonah_defconfig
+DEFCONFIG=X00T_defconfig
 
 # Specify compiler. 
 # 'clang' or 'gcc'
@@ -267,7 +267,7 @@ build_kernel() {
 
 	if [ "$PTTG" = 1 ]
  	then
-		tg_post_msg "<b>$KBUILD_BUILD_VERSION 🤬 CI Build Triggered</b>%0A<b>🐟Docker OS: </b><code>$DISTRO</code>%0A<b>🐧Kernel Version : </b><code>$KERVER</code>%0A<b>🗓️Date : </b><code>$(TZ=Asia/Jakarta date)</code>%0A<b>📱Device : </b><code>$MODEL [$DEVICE]</code>%0A<b>🔩Pipeline Host : </b><code>$KBUILD_BUILD_HOST</code>%0A<b>🖥️Host Core Count : </b><code>$PROCS</code>%0A<b>💽Compiler Used : </b><code>$KBUILD_COMPILER_STRING</code>%0A<b>⛓️Linker : </b><code>$LINKER</code>%0a<b>🪤Branch : </b><code>$CI_BRANCH</code>%0A<b>🆙Top Commit : </b><code>$COMMIT_HEAD</code>%0A<a href='https://github.com/Tiktodz/kernel_asus_sdm660'>🔗Link</a>"
+		tg_post_msg "<b>$KBUILD_BUILD_VERSION 🤬 CI Build Triggered</b>%0A<b>🐟Docker OS: </b><code>$DISTRO</code>%0A<b>🐧Kernel Version : </b><code>$KERVER</code>%0A<b>🗓️Date : </b><code>$(TZ=Asia/Jakarta date)</code>%0A<b>📱Device : </b><code>$MODEL [$DEVICE]</code>%0A<b>🔩Pipeline Host : </b><code>$KBUILD_BUILD_HOST</code>%0A<b>🖥️Host Core Count : </b><code>$PROCS</code>%0A<b>💽Compiler Used : </b><code>$KBUILD_COMPILER_STRING</code>%0A<b>⛓️Linker : </b><code>$LINKER</code>%0a<b>🪤Branch : </b><code>$CI_BRANCH</code>%0A<b>🆙Top Commit : </b><code>$COMMIT_HEAD</code>%0A<a href='https://github.com/Tiktodz/kernel'>🔗Link</a>"
 	fi
 
 	make O=out $DEFCONFIG
@@ -372,10 +372,10 @@ gen_zip() {
 	sed -i "s/message.word=.*/message.word=Rejeky ga akan kemana, yg masih nganggur berbahagialah!/g" anykernel.sh
 	sed -i "s/build.date=.*/build.date=$DATE/g" anykernel.sh
 
-	zip -r [LT]$ZIPNAME-$DEVICE-"$DATE" . -x ".git*" -x "anykernel-real.sh" -x "README.md" -x "*.zip"
+	zip -r $ZIPNAME-$DEVICE-"$DATE" . -x ".git*" -x "anykernel-real.sh" -x "README.md" -x "*.zip"
 
 	## Prepare a final zip variable
-	ZIP_FINAL="[LT]$ZIPNAME-$DEVICE-$DATE"
+	ZIP_FINAL="$ZIPNAME-$DEVICE-$DATE"
 
 	if [ $SIGN = 1 ]
 	then

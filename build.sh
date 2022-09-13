@@ -76,7 +76,7 @@ MODULES=0
 
 # Specify linker.
 # 'ld.lld'(default)
-LINKER=ld.bfd
+LINKER=ld.lld
 
 # Clean source prior building. 1 is NO(default) | 0 is YES
 INCREMENTAL=1
@@ -86,7 +86,7 @@ PTTG=1
 	if [ $PTTG = 1 ]
 	then
 		# Set Telegram Chat ID
-		CHATID="-1001783991370"
+		CHATID="-1001200423387"
 	fi
 
 # Generate a full DEFCONFIG prior building. 1 is YES | 0 is NO(default)
@@ -192,7 +192,7 @@ DATE=$(TZ=Asia/Shanghai date +"%Y%m%d_%H%M")
 	if [ $COMPILER = "clang" ]
 	then
 		msg "|| Cloning Clang-14 ||"
-		git clone --depth=1 https://gitlab.com/Panchajanya1999/azure-clang.git clang-llvm
+		git clone --depth=1 https://github.com/Rasenkai/proton-clang.git clang-llvm
 		# Toolchain Directory defaults to clang-llvm
 		TC_DIR=$KERNEL_DIR/clang-llvm
 	fi

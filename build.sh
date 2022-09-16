@@ -198,7 +198,7 @@ DATE=$(TZ=Asia/Shanghai date +"%Y%m%d_%H%M")
 	fi
 
 	msg "|| Cloning Anykernel ||"
-	git clone --depth 1 https://github.com/Tiktodz/AnyKernel3.git -b hmp
+	git clone --depth 1 https://github.com/Tiktodz/AnyKernel3.git -b master
 
 	if [ $BUILD_DTBO = 1 ]
 	then

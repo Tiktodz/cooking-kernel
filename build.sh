@@ -48,7 +48,7 @@ KERNEL_DIR="$(pwd)"
 BASEDIR="$(basename "$KERNEL_DIR")"
 
 # The name of the Kernel, to name the ZIP
-ZIPNAME="CLO-r42"
+ZIPNAME="EW-r38"
 
 # Build Author
 # Take care, it should be a universal and most probably, case-sensitive
@@ -65,7 +65,7 @@ DEVICE="X00TD"
 
 # The defconfig which should be used. Get it from config.gz from
 # your device or check source
-DEFCONFIG=X00TD_defconfig
+DEFCONFIG=X00T_defconfig
 
 # Specify compiler. 
 # 'clang' or 'gcc'

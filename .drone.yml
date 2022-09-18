@@ -9,7 +9,7 @@ steps:
       - "export git=$GIT"
       - "export token=$TOKEN"
       - "export TZ=Asia/Shanghai"
-      - "git clone --depth=1 https://github.com/Tiktodz/android_kernel_asus_sdm660 -b CLO-r42 kernel"
+      - "git clone --depth=1 https://github.com/Tiktodz/android_kernel_asus_sdm636 -b r38 kernel"
       - "cd kernel"
       - "curl -s https://raw.githubusercontent.com/Tiktodz/cooking-kernel/master/build.sh | bash"
     environment: 

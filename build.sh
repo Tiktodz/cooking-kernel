@@ -48,7 +48,7 @@ KERNEL_DIR="$(pwd)"
 BASEDIR="$(basename "$KERNEL_DIR")"
 
 # The name of the Kernel, to name the ZIP
-ZIPNAME="EW-r38"
+ZIPNAME="ElectroWizard-r38"
 
 # Build Author
 # Take care, it should be a universal and most probably, case-sensitive
@@ -367,7 +367,7 @@ gen_zip() {
 	sed -i "s/kernel.string=.*/kernel.string=$ZIPNAME/g" anykernel.sh
 	sed -i "s/kernel.for=.*/kernel.for=$DEVICE/g" anykernel.sh
 	sed -i "s/kernel.compiler=.*/kernel.compiler=$KBUILD_COMPILER_STRING/g" anykernel.sh
-	sed -i "s/kernel.made=.*/kernel.made=@AUTHOR/g" anykernel.sh
+	sed -i "s/kernel.made=.*/kernel.made=TKTDS/g" anykernel.sh
 	sed -i "s/kernel.version=.*/kernel.version=$KERVER/g" anykernel.sh
 	sed -i "s/message.word=.*/message.word=Rejeky ga akan kemana, yg masih nganggur berbahagialah!/g" anykernel.sh
 	sed -i "s/build.date=.*/build.date=$DATE/g" anykernel.sh
@@ -385,8 +385,8 @@ gen_zip() {
  			msg "|| Signing Zip ||"
 			tg_post_msg "<code>🔑 Signing Zip file with AOSP keys..</code>"
  		fi
-		curl -sLo zipsigner-4.0.jar https://github.com/baalajimaestro/AnyKernel3/raw/master/zipsigner-4.0.jar
-		java -jar zipsigner-4.0.jar "$ZIP_FINAL".zip "$ZIP_FINAL"-signed.zip
+		curl -sLo zipsigner-3.0.jar https://github.com/Tiktodz/AnyKernel3/raw/master/zipsigner-3.0.jar
+		java -jar zipsigner-3.0.jar "$ZIP_FINAL".zip "$ZIP_FINAL"-signed.zip
 		ZIP_FINAL="$ZIP_FINAL-signed"
 	fi
 

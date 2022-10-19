@@ -48,11 +48,11 @@ KERNEL_DIR="$(pwd)"
 BASEDIR="$(basename "$KERNEL_DIR")"
 
 # The name of the Kernel, to name the ZIP
-ZIPNAME="ElectroWizard-r38"
+ZIPNAME="ElectroWizard-Queue-OC"
 
 # Build Author
 # Take care, it should be a universal and most probably, case-sensitive
-AUTHOR="TKTDS"
+AUTHOR="dotkit"
 
 # Architecture
 ARCH=arm64
@@ -157,7 +157,6 @@ then
 	if [ "$DRONE" ]
 	then
 		export KBUILD_BUILD_VERSION=$DRONE_BUILD_NUMBER
-		export KBUILD_BUILD_HOST=$DRONE_SYSTEM_HOST
 		export CI_BRANCH=$DRONE_BRANCH
 		export BASEDIR=$DRONE_REPO_NAME # overriding
 		export SERVER_URL="${DRONE_SYSTEM_PROTO}://${DRONE_SYSTEM_HOSTNAME}/${AUTHOR}/${BASEDIR}/${KBUILD_BUILD_VERSION}"
@@ -367,7 +366,7 @@ gen_zip() {
 	sed -i "s/kernel.string=.*/kernel.string=$ZIPNAME/g" anykernel.sh
 	sed -i "s/kernel.for=.*/kernel.for=$DEVICE/g" anykernel.sh
 	sed -i "s/kernel.compiler=.*/kernel.compiler=$KBUILD_COMPILER_STRING/g" anykernel.sh
-	sed -i "s/kernel.made=.*/kernel.made=TKTDS/g" anykernel.sh
+	sed -i "s/kernel.made=.*/kernel.made=$AUTHOR/g" anykernel.sh
 	sed -i "s/kernel.version=.*/kernel.version=$KERVER/g" anykernel.sh
 	sed -i "s/message.word=.*/message.word=Rejeky ga akan kemana, yg masih nganggur berbahagialah!/g" anykernel.sh
 	sed -i "s/build.date=.*/build.date=$DATE/g" anykernel.sh

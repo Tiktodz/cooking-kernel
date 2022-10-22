@@ -48,7 +48,7 @@ KERNEL_DIR="$(pwd)"
 BASEDIR="$(basename "$KERNEL_DIR")"
 
 # The name of the Kernel, to name the ZIP
-ZIPNAME="ElectroWizard-Kernel-HMP-v1.0"
+ZIPNAME="ElectroWizard-Kernel-HMP"
 
 # Build Author
 # Take care, it should be a universal and most probably, case-sensitive
@@ -368,7 +368,7 @@ gen_zip() {
 	sed -i "s/kernel.compiler=.*/kernel.compiler=$KBUILD_COMPILER_STRING/g" anykernel.sh
 	sed -i "s/kernel.made=.*/kernel.made=$AUTHOR/g" anykernel.sh
 	sed -i "s/kernel.version=.*/kernel.version=$KERVER/g" anykernel.sh
-	sed -i "s/message.word=.*/message.word=Rezeki sudah ada yang atur om, tetap menyerah, pasti bisa!!!/g" anykernel.sh
+	sed -i "s/message.word=.*/message.word=Rezeki sudah ada yang atur om, tetap menyerah, pasti bisa!/g" anykernel.sh
 	sed -i "s/build.date=.*/build.date=$DATE/g" anykernel.sh
 
 	zip -r $ZIPNAME-$DEVICE-"$DATE" . -x ".git*" -x "anykernel-real.sh" -x "README.md" -x "*.zip"

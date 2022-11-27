@@ -48,7 +48,7 @@ KERNEL_DIR="$(pwd)"
 BASEDIR="$(basename "$KERNEL_DIR")"
 
 # The name of the Kernel, to name the ZIP
-ZIPNAME="ElectroWizard-HMP-Kernel"
+ZIPNAME="EW-EAS-CAF-12LTiramisu"
 
 # Build Author
 # Take care, it should be a universal and most probably, case-sensitive
@@ -227,8 +227,8 @@ exports() {
 	PROCS=$(nproc --all)
 
 	export KBUILD_BUILD_USER ARCH SUBARCH PATH \
-		KBUILD_COMPILER_STRING BOT_MSG_URL \
-		BOT_BUILD_URL PROCS
+	KBUILD_COMPILER_STRING BOT_MSG_URL \
+	BOT_BUILD_URL PROCS
 }
 
 ##---------------------------------------------------------##
@@ -378,7 +378,7 @@ gen_zip() {
  			msg "|| Signing Zip ||"
 			tg_post_msg "<code>🔑 Signing Zip file with AOSP keys..</code>"
  		fi
-		curl -sLo zipsigner-3.0.jar https://github.com/Tiktodz/AnyKernel3/raw/master/zipsigner-3.0.jar
+		curl -sLo zipsigner-3.0.jar https://github.com/Magisk-Modules-Repo/zipsigner/raw/master/bin/zipsigner-3.0-dexed.jar
 		java -jar zipsigner-3.0.jar "$ZIP_FINAL".zip "$ZIP_FINAL"-signed.zip
 		ZIP_FINAL="$ZIP_FINAL-signed"
 	fi

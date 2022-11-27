@@ -182,8 +182,8 @@ DATE=$(TZ=Asia/Shanghai date +"%Y%m%d_%H%M")
 	if [ $COMPILER = "gcc" ]
 	then
 		msg "|| Cloning GCC 4.9.x ||"
-		git clone --depth=1 https://github.com/najahiiii/aarch64-linux-gnu.git -b linaro8-20190402 gcc64
-		git clone --depth=1 https://github.com/innfinite4evr/android-prebuilts-gcc-linux-x86-arm-arm-eabi-7.2.git -b master gcc32
+		git clone --depth=1 https://github.com/Thoreck-project/aarch64-linux-android-4.9 gcc64
+		git clone --depth=1 https://github.com/Thoreck-project/arm-linux-androideabi-4.9 gcc32
 		GCC64_DIR=$KERNEL_DIR/gcc64
 		GCC32_DIR=$KERNEL_DIR/gcc32
 	fi
@@ -218,7 +218,7 @@ exports() {
 		PATH=$TC_DIR/bin/:$PATH
 	elif [ $COMPILER = "gcc" ]
 	then
-		KBUILD_COMPILER_STRING="Linaro GCC 8.3-2019.03~dev"
+		KBUILD_COMPILER_STRING=$("$GCC64_DIR"/bin/aarch64-linux-android-gcc  --version | head -n 1)
 		PATH=$GCC64_DIR/bin/:$GCC32_DIR/bin/:/usr/bin:$PATH
 	fi
 
@@ -297,8 +297,14 @@ build_kernel() {
 	elif [ $COMPILER = "gcc" ]
 	then
 		MAKE+=(
-                       CROSS_COMPILE_ARM32=$GCC32_DIR/bin/arm-eabi- \
-                       CROSS_COMPILE=aarch64-linux-gnu-
+			CROSS_COMPILE_ARM32=arm-linux-androideabi- \
+			CROSS_COMPILE=aarch64-linux-android- \
+			AR=aarch64-linux-android-ar \
+			OBJDUMP=aarch64-linux-android-objdump \
+			STRIP=aarch64-linux-android-strip \
+			NM=aarch64-linux-android-nm \
+			OBJCOPY=aarch64-linux-android-objcopy \
+			LD=aarch64-linux-android-$LINKER
 		)
 	fi
 	
@@ -357,12 +363,12 @@ gen_zip() {
 	fi
 	cdir AnyKernel3
 	cp -af anykernel-real.sh anykernel.sh
-	sed -i "s/kernel.string=.*/kernel.string=$ZIPNAME/g" anykernel.sh
+	sed -i "s/kernel.string=.*/kernel.string=WizardExpert/g" anykernel.sh
 	sed -i "s/kernel.for=.*/kernel.for=$DEVICE/g" anykernel.sh
 	sed -i "s/kernel.compiler=.*/kernel.compiler=$KBUILD_COMPILER_STRING/g" anykernel.sh
 	sed -i "s/kernel.made=.*/kernel.made=$AUTHOR/g" anykernel.sh
 	sed -i "s/kernel.version=.*/kernel.version=$KERVER/g" anykernel.sh
-	sed -i "s/message.word=.*/message.word=Rezeki sudah ada yang atur om, tetap menyerah, pasti bisa!/g" anykernel.sh
+	sed -i "s/message.word=.*/message.word=Rezeki udah ada yg atur om, tetap menyerah, pasti bisa!/g" anykernel.sh
 	sed -i "s/build.date=.*/build.date=$DATE/g" anykernel.sh
 
 	zip -r $ZIPNAME-$DEVICE-"$DATE" . -x ".git*" -x "anykernel-real.sh" -x "README.md" -x "*.zip"
@@ -385,7 +391,7 @@ gen_zip() {
 
 	if [ "$PTTG" = 1 ]
  	then
-		tg_post_build "$ZIP_FINAL.zip" "🔔 Build took : $((DIFF / 60)) minute(s) and $((DIFF % 60)) second(s)"
+		tg_post_build "$ZIP_FINAL.zip" "✅ Build took : $((DIFF / 60)) minute(s) and $((DIFF % 60)) second(s)"
 	fi
 	cd ..
 }

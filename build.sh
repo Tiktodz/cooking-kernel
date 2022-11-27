@@ -65,7 +65,7 @@ DEVICE="X00TD"
 
 # The defconfig which should be used. Get it from config.gz from
 # your device or check source
-DEFCONFIG=X00T_defconfig
+DEFCONFIG=X00TD_defconfig
 
 # Specify compiler. 
 # 'clang' or 'gcc'
@@ -182,8 +182,8 @@ DATE=$(TZ=Asia/Shanghai date +"%Y%m%d_%H%M")
 	if [ $COMPILER = "gcc" ]
 	then
 		msg "|| Cloning GCC 4.9.x ||"
-		git clone --depth=1 https://github.com/Tiktodz/aarch64-linux-android-4.9.git -b master gcc64
-		git clone --depth=1 https://github.com/Tiktodz/arm-linux-androideabi-4.9.git -b master gcc32
+		git clone --depth=1 https://github.com/najahiiii/aarch64-linux-gnu.git -b linaro8-20190402 gcc64
+		git clone --depth=1 https://github.com/innfinite4evr/android-prebuilts-gcc-linux-x86-arm-arm-eabi-7.2.git -b master gcc32
 		GCC64_DIR=$KERNEL_DIR/gcc64
 		GCC32_DIR=$KERNEL_DIR/gcc32
 	fi
@@ -197,7 +197,7 @@ DATE=$(TZ=Asia/Shanghai date +"%Y%m%d_%H%M")
 	fi
 
 	msg "|| Cloning Anykernel ||"
-	git clone --depth 1 https://github.com/Tiktodz/AnyKernel3.git -b master
+	git clone --depth 1 https://github.com/Tiktodz/AnyKernel3.git -b eas
 
 	if [ $BUILD_DTBO = 1 ]
 	then
@@ -218,7 +218,7 @@ exports() {
 		PATH=$TC_DIR/bin/:$PATH
 	elif [ $COMPILER = "gcc" ]
 	then
-		KBUILD_COMPILER_STRING=$("$GCC64_DIR"/bin/aarch64-linux-android-gcc  --version | head -n 1)
+		KBUILD_COMPILER_STRING="Linaro GCC 8.3-2019.03~dev"
 		PATH=$GCC64_DIR/bin/:$GCC32_DIR/bin/:/usr/bin:$PATH
 	fi
 
@@ -297,14 +297,8 @@ build_kernel() {
 	elif [ $COMPILER = "gcc" ]
 	then
 		MAKE+=(
-			CROSS_COMPILE_ARM32=arm-linux-androideabi- \
-			CROSS_COMPILE=aarch64-linux-android- \
-			AR=aarch64-linux-android-ar \
-			OBJDUMP=aarch64-linux-android-objdump \
-			STRIP=aarch64-linux-android-strip \
-			NM=aarch64-linux-android-nm \
-			OBJCOPY=aarch64-linux-android-objcopy \
-			LD=aarch64-linux-android-$LINKER
+                       CROSS_COMPILE_ARM32=$GCC32_DIR/bin/arm-eabi- \
+                       CROSS_COMPILE=aarch64-linux-gnu-
 		)
 	fi
 	

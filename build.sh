@@ -362,11 +362,11 @@ gen_zip() {
 	fi
 	cdir AnyKernel3
 	cp -af anykernel-real.sh anykernel.sh
-	sed -i "s/kernel.string=.*/kernel.string=WizardExpert/g" anykernel.sh
+	sed -i "s/kernel.string=.*/kernel.string=ElectroWizard/g" anykernel.sh
 	sed -i "s/kernel.for=.*/kernel.for=$DEVICE/g" anykernel.sh
 	sed -i "s/kernel.compiler=.*/kernel.compiler=$KBUILD_COMPILER_STRING/g" anykernel.sh
 	sed -i "s/kernel.made=.*/kernel.made=$AUTHOR/g" anykernel.sh
-	sed -i "s/kernel.version=.*/kernel.version=$KERVER/g" anykernel.sh
+	sed -i "s/kernel.version=.*/kernel.version=HMP/g" anykernel.sh
 	sed -i "s/message.word=.*/message.word=Rezeki udah ada yg atur om, tetap menyerah, pasti bisa!/g" anykernel.sh
 	sed -i "s/build.date=.*/build.date=$DATE/g" anykernel.sh
 

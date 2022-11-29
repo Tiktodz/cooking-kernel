@@ -48,7 +48,7 @@ KERNEL_DIR="$(pwd)"
 BASEDIR="$(basename "$KERNEL_DIR")"
 
 # The name of the Kernel, to name the ZIP
-ZIPNAME="EW-HMP-CCLOGIC-12LTiramisu"
+ZIPNAME="EW-HMP-LTO-12LTiramisu"
 
 # Build Author
 # Take care, it should be a universal and most probably, case-sensitive
@@ -69,14 +69,14 @@ DEFCONFIG=X00TD_defconfig
 
 # Specify compiler. 
 # 'clang' or 'gcc'
-COMPILER=gcc
+COMPILER=clang
 
 # Build modules. 0 = NO | 1 = YES
 MODULES=0
 
 # Specify linker.
 # 'ld.lld'(default)
-LINKER=ld.bfd
+LINKER=ld.lld
 
 # Clean source prior building. 1 is NO(default) | 0 is YES
 INCREMENTAL=1
@@ -190,7 +190,7 @@ DATE=$(TZ=Europe/Moscow date +"%Y%m%d_%H%M")
 	if [ $COMPILER = "clang" ]
 	then
 		msg "|| Cloning Clang||"
-		git clone --depth=1 https://github.com/Rasenkai/proton-clang.git clang
+		git clone --depth=1 https://gitlab.com/Panchajanya1999/azure-clang clang
 		# Toolchain Directory defaults to clang-llvm
 		TC_DIR=$KERNEL_DIR/clang
 	fi

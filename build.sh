@@ -48,7 +48,7 @@ KERNEL_DIR="$(pwd)"
 BASEDIR="$(basename "$KERNEL_DIR")"
 
 # The name of the Kernel, to name the ZIP
-ZIPNAME="EW-HMP-LTO-12LTiramisu"
+ZIPNAME="EW-HMP-Stock-12LTiramisu"
 
 # Build Author
 # Take care, it should be a universal and most probably, case-sensitive
@@ -69,14 +69,14 @@ DEFCONFIG=X00TD_defconfig
 
 # Specify compiler. 
 # 'clang' or 'gcc'
-COMPILER=clang
+COMPILER=gcc
 
 # Build modules. 0 = NO | 1 = YES
 MODULES=0
 
 # Specify linker.
 # 'ld.lld'(default)
-LINKER=ld.lld
+LINKER=ld.bfd
 
 # Clean source prior building. 1 is NO(default) | 0 is YES
 INCREMENTAL=1
@@ -181,8 +181,8 @@ DATE=$(TZ=Europe/Moscow date +"%Y%m%d_%H%M")
 	if [ $COMPILER = "gcc" ]
 	then
 		msg "|| Cloning GCC 4.9.x ||"
-		git clone --depth=1 https://github.com/Thoreck-project/aarch64-linux-android-4.9 gcc64
-		git clone --depth=1 https://github.com/Thoreck-project/arm-linux-androideabi-4.9 gcc32
+		git clone --depth=1 https://github.com/KudProject/aarch64-linux-android-4.9 gcc64
+		git clone --depth=1 https://github.com/KudProject/arm-linux-androideabi-4.9 gcc32
 		GCC64_DIR=$KERNEL_DIR/gcc64
 		GCC32_DIR=$KERNEL_DIR/gcc32
 	fi

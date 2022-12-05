@@ -65,7 +65,7 @@ BUILD_TYPE="INCREMENTAL"
 
 # Specify compiler.
 # 'clang' or 'clangxgcc' or 'gcc'
-COMPILER=clang
+COMPILER=gcc
 
 # Kernel is LTO
 LTO=0
@@ -143,8 +143,8 @@ DATE2=$(TZ=Asia/Jakarta date +"%Y%m%d")
 	elif [ $COMPILER = "gcc" ]
 	then
 		msg "|| Cloning GCC  ||"
-		git clone --depth=1 https://github.com/mvaisakh/gcc-arm64.git $KERNEL_DIR/gcc64
-		git clone --depth=1 https://github.com/mvaisakh/gcc-arm.git $KERNEL_DIR/gcc32
+		git clone --depth=1 https://github.com/KudProject/aarch64-linux-android-4.9 $KERNEL_DIR/gcc64
+		git clone --depth=1 https://github.com/KudProject/arm-linux-androideabi-4.9 $KERNEL_DIR/gcc32
 	elif [ $COMPILER = "clangxgcc" ]
 	then
 		msg "|| Cloning toolchain ||"
@@ -326,11 +326,8 @@ build_kernel() {
 	elif [ $COMPILER = "gcc" ]
 	then
 		make -j"$PROCS" O=out \
-				CROSS_COMPILE_ARM32=arm-eabi- \
-				CROSS_COMPILE=aarch64-elf- \
-				AR=aarch64-elf-ar \
-				OBJDUMP=aarch64-elf-objdump \
-				STRIP=aarch64-elf-strip "${MAKE[@]}" 2>&1 | tee build.log
+				CROSS_COMPILE_ARM32=arm-linux-androideabi- \
+				CROSS_COMPILE=aarch64-linux-android- "${MAKE[@]}" 2>&1 | tee build.log
 	elif [ $COMPILER = "clangxgcc" ]
 	then
 		make -j"$PROCS"  O=out \

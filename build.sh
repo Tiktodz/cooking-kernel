@@ -55,13 +55,13 @@ DEFCONFIG=X00TD_defconfig
 MANUFACTURERINFO="ASUSTek Computer Inc."
 
 # Kernel Variant
-NAMA=Electro-Wizard
+NAMA=ElectroWizard
 KERNEL_FOR=NLV
-JENIS=[HMP]
+JENIS=HMP
+VARIAN=STOCK
 
-VARIAN=20.80-#1
 # Build Type
-BUILD_TYPE="PQ"
+BUILD_TYPE="INCREMENTAL"
 
 # Specify compiler.
 # 'clang' or 'clangxgcc' or 'gcc'
@@ -177,7 +177,7 @@ DATE2=$(TZ=Asia/Jakarta date +"%Y%m%d")
 # Function to replace defconfig versioning
 setversioning() {
     # For staging branch
-    KERNELNAME="$JENIS-$NAMA-$VARIAN"
+    KERNELNAME="$KERNEL_FOR-$NAMA-$JENIS-$VARIAN"
     # Export our new localversion and zipnames
     export KERNELNAME
     export ZIPNAME="$KERNELNAME.zip"
@@ -379,12 +379,12 @@ gen_zip() {
 	fi
 	cd AnyKernel3 || exit
 	cp -af anykernel-real.sh anykernel.sh
-	sed -i "s/kernel.string=.*/kernel.string=$NAMA-$VARIAN/g" anykernel.sh
+	sed -i "s/kernel.string=.*/kernel.string=$NAMA/g" anykernel.sh
 	sed -i "s/kernel.for=.*/kernel.for=$KERNEL_FOR/g" anykernel.sh
 	sed -i "s/kernel.compiler=.*/kernel.compiler=$COMPILER/g" anykernel.sh
 	sed -i "s/kernel.made=.*/kernel.made=dotkit/g" anykernel.sh
 	sed -i "s/kernel.version=.*/kernel.version=$LINUXVER/g" anykernel.sh
-	sed -i "s/message.word=.*/message.word=Rezeki udah ada yg atur, tetap menyerah, pasti bisa!/g" anykernel.sh
+	sed -i "s/message.word=.*/message.word=Rezeki udh ada yg atur om, tetap menyerah, pasti bisa!/g" anykernel.sh
 	sed -i "s/build.date=.*/build.date=$DATE2/g" anykernel.sh
 
 	zip -r9 "$ZIPNAME" * -x .git README.md anykernel-real.sh .gitignore zipsigner* *.zip
@@ -411,7 +411,7 @@ gen_zip() {
         <b>Changelog</b>
         - <code>$COMMIT_HEAD</code>
         <b></b>
-        #$BUILD_TYPE #$JENIS #$VARIAN"
+        #$NAMA #$JENIS #$VARIAN"
         
 	cd ..
 }

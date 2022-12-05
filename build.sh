@@ -381,7 +381,7 @@ gen_zip() {
 	cp -af anykernel-real.sh anykernel.sh
 	sed -i "s/kernel.string=.*/kernel.string=$NAMA/g" anykernel.sh
 	sed -i "s/kernel.for=.*/kernel.for=$KERNEL_FOR/g" anykernel.sh
-	sed -i "s/kernel.compiler=.*/kernel.compiler=$COMPILER/g" anykernel.sh
+	sed -i "s/kernel.compiler=.*/kernel.compiler=$KBUILD_COMPILER_STRING/g" anykernel.sh
 	sed -i "s/kernel.made=.*/kernel.made=dotkit/g" anykernel.sh
 	sed -i "s/kernel.version=.*/kernel.version=$LINUXVER/g" anykernel.sh
 	sed -i "s/message.word=.*/message.word=Rezeki udh ada yg atur om, tetap menyerah, pasti bisa!/g" anykernel.sh

@@ -219,8 +219,8 @@ exports() {
 	PROCS=$(nproc --all)
 
 	export KBUILD_BUILD_USER ARCH SUBARCH PATH \
-		KBUILD_COMPILER_STRING BOT_MSG_URL \
-		BOT_BUILD_URL PROCS TOKEN
+	KBUILD_COMPILER_STRING BOT_MSG_URL \
+	BOT_BUILD_URL PROCS TOKEN
 }
 
 ##---------------------------------------------------------##
@@ -322,8 +322,7 @@ build_kernel() {
 				OBJCOPY=llvm-objcopy \
 				OBJDUMP=llvm-objdump \
 				CLANG_TRIPLE=aarch64-linux-gnu- \
-				STRIP=llvm-strip \
-                                LD="$LINKER" "${MAKE[@]}" 2>&1 | tee build.log
+				STRIP=llvm-strip "${MAKE[@]}" 2>&1 | tee build.log
 	elif [ $COMPILER = "gcc" ]
 	then
 		make -j"$PROCS" O=out \

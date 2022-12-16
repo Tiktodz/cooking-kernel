@@ -65,7 +65,7 @@ BUILD_TYPE="INCREMENTAL"
 
 # Specify compiler.
 # 'clang' or 'clangxgcc' or 'gcc'
-COMPILER=clang
+COMPILER=gcc
 
 # Kernel is LTO
 LTO=0

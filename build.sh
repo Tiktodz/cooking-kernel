@@ -48,7 +48,7 @@ KERNEL_DIR="$(pwd)"
 BASEDIR="$(basename "$KERNEL_DIR")"
 
 # The name of the Kernel, to name the ZIP
-ZIPNAME="EW-HMP-Stock-12LTiramisu"
+ZIPNAME="thirteen-EW-Kernel-X00TD"
 
 # Build Author
 # Take care, it should be a universal and most probably, case-sensitive
@@ -196,7 +196,7 @@ DATE=$(TZ=Europe/Moscow date +"%Y%m%d_%H%M")
 	fi
 
 	msg "|| Cloning Anykernel ||"
-	git clone --depth 1 https://github.com/Tiktodz/AnyKernel3.git -b master
+	git clone --depth 1 https://github.com/Tiktodz/AnyKernel3.git -b eas
 
 	if [ $BUILD_DTBO = 1 ]
 	then

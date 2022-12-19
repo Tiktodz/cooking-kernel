@@ -1,6 +1,7 @@
 #! /bin/bash
 # shellcheck disable=SC2154
  # Script For Building Android arm64 Kernel
+
  #
  # Copyright (c) 2018-2021 Panchajanya1999 <rsk52959@gmail.com>
  #

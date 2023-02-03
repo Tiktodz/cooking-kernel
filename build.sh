@@ -58,7 +58,7 @@ MANUFACTURERINFO="ASUSTek Computer Inc."
 # Kernel Variant
 NAMA=ElectroWizard
 KERNEL_FOR=thirteen
-JENIS=EAS
+JENIS=HMP
 VARIAN=LV
 
 # Build Type
@@ -139,7 +139,7 @@ DATE2=$(TZ=Asia/Jakarta date +"%Y%m%d")
 	if [ $COMPILER = "clang" ]
 	then
 		msg "|| Cloning toolchain ||"
-		git clone --depth=1 https://gitlab.com/Panchajanya1999/azure-clang clang
+		git clone --depth=1 https://github.com/kdrag0n/proton-clang clang
 
 	elif [ $COMPILER = "gcc" ]
 	then
@@ -164,7 +164,7 @@ DATE2=$(TZ=Asia/Jakarta date +"%Y%m%d")
 		GCC32_DIR=$KERNEL_DIR/gcc32
 
 	msg "|| Cloning Anykernel ||"
-        git clone https://github.com/Tiktodz/AnyKernel3.git -b eas AnyKernel3
+        git clone https://github.com/Tiktodz/AnyKernel3.git -b main AnyKernel3
 
 	if [ $BUILD_DTBO = 1 ]
 	then

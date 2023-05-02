@@ -56,7 +56,7 @@ DEFCONFIG=X00TD_defconfig
 MANUFACTURERINFO="ASUSTek Computer Inc."
 
 # Kernel Variant
-NAMA=ElectroWizard
+NAMA=NestleCerelac
 KERNEL_FOR=thirteen
 JENIS=HMP
 VARIAN=EOL

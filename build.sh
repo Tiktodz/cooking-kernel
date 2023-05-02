@@ -55,7 +55,7 @@ DEFCONFIG=X00TD_defconfig
 # Show manufacturer info
 MANUFACTURERINFO="ASUSTek Computer Inc."
 
-# Kernel Variant
+# Kernel Varian
 NAMA=NestleCerelac
 KERNEL_FOR=thirteen
 JENIS=HMP

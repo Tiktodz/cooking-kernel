@@ -50,14 +50,14 @@ DEVICE="X00TD"
 
 # The defconfig which should be used. Get it from config.gz from
 # your device or check source
-DEFCONFIG=X00TD_defconfig
+DEFCONFIG=darkonah_defconfig
 
 # Show manufacturer info
 MANUFACTURERINFO="ASUSTek Computer Inc."
 
 # Kernel Varian
-NAMA=NestleCerelac
-KERNEL_FOR=thirteen
+NAMA=Fakedarkonah
+KERNEL_FOR=Q
 JENIS=HMP
 VARIAN=EOL
 
@@ -66,7 +66,7 @@ BUILD_TYPE="INCREMENTAL"
 
 # Specify compiler.
 # 'clang' or 'clangxgcc' or 'gcc'
-COMPILER=clang
+COMPILER=gcc
 
 # Kernel is LTO
 LTO=0

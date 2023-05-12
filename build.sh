@@ -50,16 +50,16 @@ DEVICE="X00TD"
 
 # The defconfig which should be used. Get it from config.gz from
 # your device or check source
-DEFCONFIG=darkonah_defconfig
+DEFCONFIG=X00TD_defconfig
 
 # Show manufacturer info
 MANUFACTURERINFO="ASUSTek Computer Inc."
 
 # Kernel Varian
-NAMA=Fakedarkonah
+NAMA=TheOneMemory
 KERNEL_FOR=Q
 JENIS=HMP
-VARIAN=EOL
+VARIAN=Onyx
 
 # Build Type
 BUILD_TYPE="INCREMENTAL"

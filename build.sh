@@ -1,4 +1,4 @@
-#! /bin/bashi
+#! /bin/bash
 # shellcheck disable=SC2154
  # Script For Building Android arm64 Kernel
 

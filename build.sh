@@ -144,8 +144,9 @@ DATE2=$(TZ=Asia/Jakarta date +"%Y%m%d")
 	elif [ $COMPILER = "gcc" ]
 	then
 		msg "|| Cloning GCC  ||"
-		git clone --depth=1 https://github.com/najahiiii/aarch64-linux-gnu.git -b linaro8-20190402 $KERNEL_DIR/gcc64
-		git clone --depth=1 https://github.com/innfinite4evr/android-prebuilts-gcc-linux-x86-arm-arm-eabi-7.2.git -b master $KERNEL_DIR/gcc32
+                git clone --depth=1 https://github.com/Kyvangka1610/gcc-arm-10.2-2020.11-x86_64-aarch64-none-linux-gnu -b master $KERNEL_DIR/gcc64
+		git clone --depth=1 https://github.com/Kyvangka1610/gcc-arm-10.2-2020.11-x86_64-arm-none-linux-gnueabihf -b master $KERNEL_DIR/gcc32
+
 	elif [ $COMPILER = "clangxgcc" ]
 	then
 		msg "|| Cloning toolchain ||"
@@ -202,7 +203,7 @@ exports() {
 		PATH=$TC_DIR/bin:$GCC64_DIR/bin:$GCC32_DIR/bin:/usr/bin:$PATH
 	elif [ $COMPILER = "gcc" ]
 	then
-		KBUILD_COMPILER_STRING="Linaro GCC 8.3-2019.03~dev"
+		KBUILD_COMPILER_STRING=$("$GCC64_DIR"/bin/aarch64-none-linux-gnu-gcc --version | head -n 1)
 		PATH=$GCC64_DIR/bin/:$GCC32_DIR/bin/:/usr/bin:$PATH
 	fi
 
@@ -327,8 +328,8 @@ build_kernel() {
 	elif [ $COMPILER = "gcc" ]
 	then
 		make -j"$PROCS" O=out \
-				CROSS_COMPILE_ARM32=arm-eabi- \
-				CROSS_COMPILE=aarch64-linux-gnu- "${MAKE[@]}" 2>&1 | tee build.log
+				CROSS_COMPILE_ARM32=arm-none-linux-gnueabihf- \
+				CROSS_COMPILE=aarch64-none-linux-gnu- "${MAKE[@]}" 2>&1 | tee build.log
 	elif [ $COMPILER = "clangxgcc" ]
 	then
 		make -j"$PROCS"  O=out \

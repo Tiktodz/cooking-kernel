@@ -2,11 +2,11 @@ version: 2.1
 jobs:
   compile:
    docker:
-      - image: xyzuan/xdocker:latest
+      - image: wizardprjkt/dotkit:v1
    steps:
       - run:
           command: |
-            git clone --depth=1 https://github.com/Tiktodz/Ruega-Kernel-X00T -b 9x13 kernel && cd kernel
+            git clone --depth=1 https://github.com/Tiktodz/android_kernel_asus_sdm636 -b twelve-caf-eas kernel && cd kernel
             curl https://raw.githubusercontent.com/Tiktodz/cooking-kernel/circle/build.sh > run.sh
             source run.sh
           no_output_timeout : 5h

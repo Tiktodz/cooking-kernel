@@ -57,8 +57,8 @@ MANUFACTURERINFO="ASUSTek Computer Inc."
 
 # Kernel Varian
 NAMA=TheOneMemory
-KERNEL_FOR=9x13
-JENIS=Onyx
+KERNEL_FOR=12x13
+JENIS=HayzelCAF
 VARIAN=HMP
 
 # Build Type
@@ -139,7 +139,7 @@ DATE2=$(TZ=Asia/Jakarta date +"%Y%m%d")
 	if [ $COMPILER = "clang" ]
 	then
 		msg "|| Cloning toolchain ||"
-		git clone --depth=1 https://gitlab.com/strongreasons/stress-clang clang
+		git clone --depth=1 https://github.com/kdrag0n/proton-clang clang
 
 	elif [ $COMPILER = "gcc" ]
 	then

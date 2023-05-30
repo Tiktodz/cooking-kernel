@@ -2,7 +2,7 @@ version: 2.1
 jobs:
   compile:
    docker:
-      - image: wizardprjkt/dotkit:v1
+      - image: wizardprjkt/dotkit:22.04
    steps:
       - run:
           command: |

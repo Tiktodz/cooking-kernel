@@ -58,8 +58,8 @@ MANUFACTURERINFO="ASUSTek Computer Inc."
 # Kernel Varian
 NAMA=TheOneMemory
 KERNEL_FOR=12x13
-JENIS=HayzelCAF
-VARIAN=HMP
+JENIS=REBASED
+VARIAN=EAS
 
 # Build Type
 BUILD_TYPE="INCREMENTAL"
@@ -165,7 +165,7 @@ DATE2=$(TZ=Asia/Jakarta date +"%Y%m%d")
 		GCC32_DIR=$KERNEL_DIR/gcc32
 
 	msg "|| Cloning Anykernel ||"
-        git clone https://github.com/Tiktodz/AnyKernel3.git -b main AnyKernel3
+        git clone https://github.com/Tiktodz/AnyKernel3.git -b eas AnyKernel3
 
 	if [ $BUILD_DTBO = 1 ]
 	then

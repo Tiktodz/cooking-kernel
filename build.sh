@@ -17,7 +17,7 @@
  # See the License for the specific language governing permissions and
  # limitations under the License.
  #
- 
+
 #Kernel building script
 
 # Function to show an informational message
@@ -195,7 +195,8 @@ exports() {
 
 	if [ $COMPILER = "clang" ]
 	then
-		KBUILD_COMPILER_STRING=$("$TC_DIR"/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')
+		CLANG_VER=$("$TC_DIR"/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')
+                LLD_VER="$("$ClangPath"/bin/ld.lld --version | head -n 1)"
 		PATH=$TC_DIR/bin/:$PATH
 	elif [ $COMPILER = "clangxgcc" ]
 	then
@@ -212,7 +213,8 @@ exports() {
         export LD_LIBRARY_PATH=$TC_DIR/lib
 	fi
 
-	export PATH KBUILD_COMPILER_STRING
+	export PATH
+        export KBUILD_COMPILER_STRING="$CLANG_VER with $LLD_VER"
 	TOKEN=$TG_TOKEN
 	PROCS=$(nproc --all)
 	export PROCS

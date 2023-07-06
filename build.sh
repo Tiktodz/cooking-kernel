@@ -57,16 +57,16 @@ MANUFACTURERINFO="ASUSTek Computer Inc."
 
 # Kernel Varian
 NAMA=TheOneMemory
-KERNEL_FOR=12x13
-JENIS=REBASED
-VARIAN=EAS
+KERNEL_FOR=9x13
+JENIS=Hayzel
+VARIAN=HMP
 
 # Build Type
 BUILD_TYPE="INCREMENTAL"
 
 # Specify compiler.
-# 'clang' or 'clangxgcc' or 'gcc'
-COMPILER=clang
+# 'clang' or 'sdclang' or 'gcc'
+COMPILER=sdclang
 
 # Kernel is LTO
 LTO=0
@@ -144,17 +144,17 @@ DATE2=$(TZ=Asia/Jakarta date +"%Y%m%d")
 	elif [ $COMPILER = "gcc" ]
 	then
 		msg "|| Cloning GCC  ||"
-                git clone --depth=1 https://github.com/Kyvangka1610/gcc-arm-10.2-2020.11-x86_64-aarch64-none-linux-gnu -b master $KERNEL_DIR/gcc64
+        git clone --depth=1 https://github.com/Kyvangka1610/gcc-arm-10.2-2020.11-x86_64-aarch64-none-linux-gnu -b master $KERNEL_DIR/gcc64
 		git clone --depth=1 https://github.com/Kyvangka1610/gcc-arm-10.2-2020.11-x86_64-arm-none-linux-gnueabihf -b master $KERNEL_DIR/gcc32
 
-	elif [ $COMPILER = "clangxgcc" ]
+	elif [ $COMPILER = "sdclang" ]
 	then
 		msg "|| Cloning toolchain ||"
-		git clone --depth=1 https://github.com/Thoreck-project/DragonTC -b 10.0 clang
+		git clone --depth=1 https://github.com/RyuujiX/SDClang -b 14 clang
 
 		msg "|| Cloning GCC ||"
-		git clone --depth=1 https://github.com/Thoreck-project/aarch64-linux-gnu-gcc9.git -b stable-gcc gcc64
-		git clone --depth=1 https://github.com/Thoreck-project/arm-linux-gnueabi-gcc9.git -b stable-gcc gcc32
+		git clone --depth=1 https://github.com/Kneba/aarch64-linux-android-4.9 -b stable-gcc gcc64
+		git clone --depth=1 https://github.com/Kneba/arm-linux-androideabi-4.9 -b stable-gcc gcc32
 	fi
 
 	# Toolchain Directory defaults to clang-llvm
@@ -199,14 +199,16 @@ exports() {
         LLD_VER="$("$ClangPath"/bin/ld.lld --version | head -n 1)"
 		KBUILD_COMPILER_STRING="$CLANG_VER with $LLD_VER"
 		PATH=$TC_DIR/bin/:$PATH
-	elif [ $COMPILER = "clangxgcc" ]
-	then
-		KBUILD_COMPILER_STRING=$("$TC_DIR"/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')
-		PATH=$TC_DIR/bin:$GCC64_DIR/bin:$GCC32_DIR/bin:/usr/bin:$PATH
 	elif [ $COMPILER = "gcc" ]
 	then
 		KBUILD_COMPILER_STRING=$("$GCC64_DIR"/bin/aarch64-none-linux-gnu-gcc --version | head -n 1)
 		PATH=$GCC64_DIR/bin/:$GCC32_DIR/bin/:/usr/bin:$PATH
+	elif [ $COMPILER = "sdclang" ]
+	then
+		CLANG_VER="Snapdragon clang version 14.1.5"
+		KBUILD_COMPILER_STRING="$CLANG_VER X GCC 4.9"
+		PATH=$GCC64_DIR/bin/:$GCC32_DIR/bin/:/usr/bin:$PATH
+		ClangMoreStrings="AR=llvm-ar NM=llvm-nm AS=llvm-as STRIP=llvm-strip OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump READELF=llvm-readelf HOSTAR=llvm-ar HOSTAS=llvm-as LD_LIBRARY_PATH=$TC_DIR/lib LD=ld.lld HOSTLD=ld.lld"
 	fi
 
 	if [ $LTO = "1" ];then
@@ -332,18 +334,15 @@ build_kernel() {
 		make -j"$PROCS" O=out \
 				CROSS_COMPILE_ARM32=arm-none-linux-gnueabihf- \
 				CROSS_COMPILE=aarch64-none-linux-gnu- "${MAKE[@]}" 2>&1 | tee build.log
-	elif [ $COMPILER = "clangxgcc" ]
+	elif [ $COMPILER = "sdclang" ]
 	then
 		make -j"$PROCS"  O=out \
 				CC=clang \
-				CROSS_COMPILE=aarch64-linux-gnu- \
-				CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
-				AR=llvm-ar \
-				NM=llvm-nm \
-				OBJCOPY=llvm-objcopy \
-				OBJDUMP=llvm-objdump \
+				CROSS_COMPILE=aarch64-linux-android- \
+				CROSS_COMPILE_ARM32=arm-linux-androideabi- \
 				CLANG_TRIPLE=aarch64-linux-gnu- \
-				STRIP=llvm-strip "${MAKE[@]}" 2>&1 | tee build.log
+				HOSTCC=gcc \
+				HOSTCXX=g++ ${ClangMoreStrings} "${MAKE[@]}" 2>&1 | tee build.log
 	fi
 
 		BUILD_END=$(date +"%s")

@@ -17,7 +17,7 @@ steps:
         from_secret: git
       TOKEN: 
         from_secret: token
-    image: wizardprjkt/build:aosp
+    image: atomxorg/arch-linux:kernel
     trigger: 
       branch: 
         - master

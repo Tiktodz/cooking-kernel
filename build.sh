@@ -165,7 +165,7 @@ DATE2=$(TZ=Asia/Jakarta date +"%Y%m%d")
 		GCC32_DIR=$KERNEL_DIR/gcc32
 
 	msg "|| Cloning Anykernel ||"
-        git clone https://github.com/Tiktodz/AnyKernel3.git -b eas AnyKernel3
+        git clone https://github.com/Tiktodz/AnyKernel3.git -b main AnyKernel3
 
 	if [ $BUILD_DTBO = 1 ]
 	then
@@ -196,7 +196,8 @@ exports() {
 	if [ $COMPILER = "clang" ]
 	then
 		CLANG_VER=$("$TC_DIR"/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')
-                LLD_VER="$("$ClangPath"/bin/ld.lld --version | head -n 1)"
+        LLD_VER="$("$ClangPath"/bin/ld.lld --version | head -n 1)"
+		KBUILD_COMPILER_STRING="$CLANG_VER with $LLD_VER"
 		PATH=$TC_DIR/bin/:$PATH
 	elif [ $COMPILER = "clangxgcc" ]
 	then
@@ -209,12 +210,11 @@ exports() {
 	fi
 
 	if [ $LTO = "1" ];then
-	export LD=ld.lld
-        export LD_LIBRARY_PATH=$TC_DIR/lib
+	export LD=$LINKER
+    export LD_LIBRARY_PATH=$TC_DIR/lib
 	fi
 
 	export PATH
-        export KBUILD_COMPILER_STRING="$CLANG_VER with $LLD_VER"
 	TOKEN=$TG_TOKEN
 	PROCS=$(nproc --all)
 	export PROCS

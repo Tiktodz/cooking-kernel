@@ -57,9 +57,9 @@ MANUFACTURERINFO="ASUSTek Computer Inc."
 
 # Kernel Varian
 NAMA=TheOneMemory
-KERNEL_FOR=9x13
-JENIS=Hayzel
-VARIAN=HMP
+CODENAME=Hayzel
+VARIANT=HMP
+BASE=CLO
 
 # Build Type
 BUILD_TYPE="INCREMENTAL"
@@ -179,7 +179,7 @@ DATE2=$(TZ=Asia/Jakarta date +"%Y%m%d")
 # Function to replace defconfig versioning
 setversioning() {
     # For staging branch
-    KERNELNAME="$KERNEL_FOR-$NAMA-$JENIS-$VARIAN-$DATE2"
+    KERNELNAME="$KERNELNAME-$CODENAME-$VARIANT-$BASE-$DATE"
     # Export our new localversion and zipnames
     export KERNELNAME
     export ZIPNAME="$KERNELNAME.zip"
@@ -378,13 +378,13 @@ gen_zip() {
 	cp -af $KERNEL_ROOTDIR/changelog META-INF/com/google/android/aroma/changelog.txt
 	cp -af anykernel-real.sh anykernel.sh
 	sed -i "s/kernel.string=.*/kernel.string=$KERNELNAME/g" anykernel.sh
-	sed -i "s/kernel.type=.*/kernel.type=$VARIANT/g" anykernel.sh
+	sed -i "s/kernel.type=.*/kernel.type=$LINUXVER/g" anykernel.sh
 	sed -i "s/kernel.for=.*/kernel.for=$KERNELNAME-$CODENAME/g" anykernel.sh
 	sed -i "s/kernel.compiler=.*/kernel.compiler=$KBUILD_COMPILER_STRING/g" anykernel.sh
 	sed -i "s/kernel.made=.*/kernel.made=dotkit @fakedotkit/g" anykernel.sh
-	sed -i "s/kernel.version=.*/kernel.version=$VERSION/g" anykernel.sh
+	sed -i "s/kernel.version=.*/kernel.version=$LINUXVER/g" anykernel.sh
 	sed -i "s/message.word=.*/message.word=Appreciate your efforts for choosing TheOneMemory kernel./g" anykernel.sh
-	sed -i "s/build.date=.*/build.date=$DATE/g" anykernel.sh
+	sed -i "s/build.date=.*/build.date=$DATE2/g" anykernel.sh
 	sed -i "s/build.type=.*/build.type=$CODENAME/g" anykernel.sh
 	sed -i "s/supported.versions=.*/supported.versions=9-13/g" anykernel.sh
 	sed -i "s/device.name1=.*/device.name1=X00TD/g" anykernel.sh
@@ -395,10 +395,10 @@ gen_zip() {
 	sed -i "s/X00TD=.*/X00TD=1/g" anykernel.sh
 	cd META-INF/com/google/android
 	sed -i "s/KNAME/$KERNELNAME/g" aroma-config
-	sed -i "s/KVER/$VERSION/g" aroma-config
+	sed -i "s/KVER/$LINUXVER/g" aroma-config
 	sed -i "s/KAUTHOR/dotkit @fakedotkit/g" aroma-config
 	sed -i "s/KDEVICE/Zenfone Max Pro M1/g" aroma-config
-	sed -i "s/KBDATE/$DATE/g" aroma-config
+	sed -i "s/KBDATE/$DATE2/g" aroma-config
 	sed -i "s/KVARIANT/$CODENAME-$VARIANT/g" aroma-config
 	cd ../../../..
 
@@ -422,7 +422,7 @@ gen_zip() {
         - <code>$((DIFF / 60)) minute(s) $((DIFF % 60)) second(s) </code>
         
         <b>Date</b>
-        -<code>$DATE2</code>
+        -<code>$DATE</code>
         
         <b>Linux Version</b>
         -<code>$LINUXVER</code>
@@ -433,7 +433,7 @@ gen_zip() {
         <b>Changelog</b>
         - <code>$COMMIT_HEAD</code>
         <b></b>
-        #$NAMA #$JENIS #$VARIAN"
+        #$KERNELNAME #$CODENAME #$VARIANT"
         
 	cd ..
 }

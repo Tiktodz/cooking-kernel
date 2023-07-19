@@ -132,7 +132,7 @@ COMMIT_HEAD=$(git log --pretty=format:'%s' -n1)
 # Set Date
 DATE=$(TZ=Asia/Jakarta date +"%Y%m%d_%H%M")
 DATE2=$(TZ=Asia/Jakarta date +"%Y%m%d")
-#Now Its time for other stuffs like cloning, exporting, etc
+# Now Its time for other stuffs like cloning, exporting, etc
 
  clone() {
 	echo " "
@@ -153,8 +153,8 @@ DATE2=$(TZ=Asia/Jakarta date +"%Y%m%d")
 		git clone --depth=1 https://github.com/RyuujiX/SDClang -b 14 clang
 
 		msg "|| Cloning GCC ||"
-		git clone --depth=1 https://github.com/Kneba/aarch64-linux-android-4.9 -b gcc64
-		git clone --depth=1 https://github.com/Kneba/arm-linux-androideabi-4.9 -b gcc32
+		git clone --depth=1 https://github.com/Kneba/aarch64-linux-android-4.9 $KERNEL_DIR/gcc64
+		git clone --depth=1 https://github.com/Kneba/arm-linux-androideabi-4.9 $KERNEL_DIR/gcc32
 	fi
 
 	# Toolchain Directory defaults to clang-llvm
@@ -165,7 +165,7 @@ DATE2=$(TZ=Asia/Jakarta date +"%Y%m%d")
 		GCC32_DIR=$KERNEL_DIR/gcc32
 
 	msg "|| Cloning Anykernel ||"
-        git clone https://github.com/Tiktodz/AnyKernel3.git -b main AnyKernel3
+        git clone https://github.com/Tiktodz/AnyKernel3.git -b hmp AnyKernel3
 
 	if [ $BUILD_DTBO = 1 ]
 	then
@@ -213,7 +213,7 @@ exports() {
 
 	if [ $LTO = "1" ];then
 	export LD=$LINKER
-    export LD_LIBRARY_PATH=$TC_DIR/lib
+	export LD_LIBRARY_PATH=$TC_DIR/lib
 	fi
 
 	export PATH
@@ -266,11 +266,11 @@ tg_send_sticker() {
 ##----------------------------------------------------------------##
 
 tg_send_files(){
-    KernelFiles="$KERNEL_DIR/AnyKernel3/$ZIP_RELEASE.zip"
+	KernelFiles="$KERNEL_DIR/AnyKernel3/$ZIP_RELEASE.zip"
 	MD5CHECK=$(md5sum "$KernelFiles" | cut -d' ' -f1)
 	SID="CAACAgUAAx0CR6Ju_gADT2DeeHjHQGd-79qVNI8aVzDBT_6tAAK8AQACwvKhVfGO7Lbi7poiIAQ"
 	STICK="CAACAgUAAx0CR6Ju_gADT2DeeHjHQGd-79qVNI8aVzDBT_6tAAK8AQACwvKhVfGO7Lbi7poiIAQ"
-    MSG="✅ <b>Build Done</b>
+	MSG="✅ <b>Build Done</b>
 - <code>$((DIFF / 60)) minute(s) $((DIFF % 60)) second(s) </code>
 
 <b>Build Type</b>
@@ -281,14 +281,11 @@ tg_send_files(){
 
 <b>Zip Name</b>
 - <code>$ZIP_RELEASE</code>"
-
         curl --progress-bar -F document=@"$KernelFiles" "https://api.telegram.org/bot$TG_TOKEN/sendDocument" \
         -F chat_id="$TG_CHAT_ID"  \
         -F "disable_web_page_preview=true" \
         -F "parse_mode=html" \
-        -F caption="$MSG"
-
-			tg_send_sticker "$SID"
+        -F caption="$MSG" tg_send_sticker "$SID"
 }
 
 ##----------------------------------------------------------##
@@ -311,8 +308,7 @@ build_kernel() {
 	then
 		cp .config arch/arm64/configs/$DEFCONFIG
 		git add arch/arm64/configs/$DEFCONFIG
-		git commit -m "$DEFCONFIG: Regenerate
-						This is an auto-generated commit"
+		git commit -m "$DEFCONFIG: Regenerate This is an auto-generated commit"
 	fi
 
 	BUILD_START=$(date +"%s")
@@ -356,7 +352,7 @@ build_kernel() {
 				msg "|| Building DTBO ||"
 				tg_post_msg "<code>Building DTBO..</code>"
 				python2 "$KERNEL_DIR/scripts/ufdt/libufdt/utils/src/mkdtboimg.py" \
-					create "$KERNEL_DIR/out/arch/arm64/boot/dtbo.img" --page_size=4096 "$KERNEL_DIR/out/arch/arm64/boot/dts/$DTBO_PATH"
+				create "$KERNEL_DIR/out/arch/arm64/boot/dtbo.img" --page_size=4096 "$KERNEL_DIR/out/arch/arm64/boot/dts/$DTBO_PATH"
 			fi
 				gen_zip
 			else
@@ -375,22 +371,48 @@ gen_zip() {
 	mv "$KERNEL_DIR"/out/arch/arm64/boot/Image.gz-dtb AnyKernel3/Image.gz-dtb
 	if [ $BUILD_DTBO = 1 ]
 	then
-		mv "$KERNEL_DIR"/out/arch/arm64/boot/dtbo.img AnyKernel3/dtbo.img
+	mv "$KERNEL_DIR"/out/arch/arm64/boot/dtbo.img AnyKernel3/dtbo.img
 	fi
-	cd AnyKernel3 || exit
+	cd AnyKernel3 || exit 1
+	cp -af $KERNEL_ROOTDIR/init.HayzelSpectrum.rc spectrum/init.spectrum.rc && sed -i "s/persist.spectrum.kernel.*/persist.spectrum.kernel TheOneMemory/g" spectrum/init.spectrum.rc
+	cp -af $KERNEL_ROOTDIR/changelog META-INF/com/google/android/aroma/changelog.txt
 	cp -af anykernel-real.sh anykernel.sh
-	sed -i "s/kernel.string=.*/kernel.string=$NAMA/g" anykernel.sh
-	sed -i "s/kernel.for=.*/kernel.for=$VARIAN/g" anykernel.sh
+	sed -i "s/kernel.string=.*/kernel.string=$KERNELNAME/g" anykernel.sh
+	sed -i "s/kernel.type=.*/kernel.type=$VARIANT/g" anykernel.sh
+	sed -i "s/kernel.for=.*/kernel.for=$KERNELNAME-$CODENAME/g" anykernel.sh
 	sed -i "s/kernel.compiler=.*/kernel.compiler=$KBUILD_COMPILER_STRING/g" anykernel.sh
-	sed -i "s/kernel.made=.*/kernel.made=dotkit/g" anykernel.sh
-	sed -i "s/kernel.version=.*/kernel.version=$LINUXVER/g" anykernel.sh
-	sed -i "s/message.word=.*/message.word=Rezeki udh ada yg atur om, tetap menyerah, pasti bisa!/g" anykernel.sh
-	sed -i "s/build.date=.*/build.date=$DATE2/g" anykernel.sh
+	sed -i "s/kernel.made=.*/kernel.made=dotkit @fakedotkit/g" anykernel.sh
+	sed -i "s/kernel.version=.*/kernel.version=$VERSION/g" anykernel.sh
+	sed -i "s/message.word=.*/message.word=Appreciate your efforts for choosing TheOneMemory kernel./g" anykernel.sh
+	sed -i "s/build.date=.*/build.date=$DATE/g" anykernel.sh
+	sed -i "s/build.type=.*/build.type=$CODENAME/g" anykernel.sh
+	sed -i "s/supported.versions=.*/supported.versions=9-13/g" anykernel.sh
+	sed -i "s/device.name1=.*/device.name1=X00TD/g" anykernel.sh
+	sed -i "s/device.name2=.*/device.name2=X00T/g" anykernel.sh
+	sed -i "s/device.name3=.*/device.name3=Zenfone Max Pro M1 (X00TD)/g" anykernel.sh
+	sed -i "s/device.name4=.*/device.name4=ASUS_X00TD/g" anykernel.sh
+	sed -i "s/device.name5=.*/device.name5=ASUS_X00T/g" anykernel.sh
+	sed -i "s/X00TD=.*/X00TD=1/g" anykernel.sh
+	cd META-INF/com/google/android
+	sed -i "s/KNAME/$KERNELNAME/g" aroma-config
+	sed -i "s/KVER/$VERSION/g" aroma-config
+	sed -i "s/KAUTHOR/dotkit @fakedotkit/g" aroma-config
+	sed -i "s/KDEVICE/Zenfone Max Pro M1/g" aroma-config
+	sed -i "s/KBDATE/$DATE/g" aroma-config
+	sed -i "s/KVARIANT/$CODENAME-$VARIANT/g" aroma-config
+	cd ../../../..
 
 	zip -r9 "$ZIPNAME" * -x .git README.md anykernel-real.sh .gitignore zipsigner* *.zip
 
 	## Prepare a final zip variable
 	ZIP_FINAL="$ZIPNAME"
+
+	msg "|| Signing Zip ||"
+	tg_post_msg "<code>🔑 Signing Zip file with AOSP keys..</code>"
+
+	curl -sLo zipsigner-3.0.jar https://github.com/Magisk-Modules-Repo/zipsigner/raw/master/bin/zipsigner-3.0-dexed.jar
+	java -jar zipsigner-3.0.jar "$ZIP_FINAL".zip "$ZIP_FINAL"-signed.zip
+	ZIP_FINAL="$ZIP_FINAL-signed"
 
 	curl --progress-bar -F document=@"$ZIPNAME" "https://api.telegram.org/bot$TG_TOKEN/sendDocument" \
         -F chat_id="$TG_CHAT_ID"  \

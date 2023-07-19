@@ -78,6 +78,9 @@ LINKER=ld.lld
 # Clean source prior building. 1 is NO(default) | 0 is YES
 INCREMENTAL=1
 
+# Java sign
+command -v java > /dev/null 2>&1
+
 # Push ZIP to Telegram. 1 is YES | 0 is NO(default)
 PTTG=1
 	if [ $PTTG = 1 ]
@@ -95,19 +98,6 @@ FILES=Image.gz-dtb
 # Build dtbo.img (select this only if your source has support to building dtbo.img)
 # 1 is YES | 0 is NO(default)
 BUILD_DTBO=0
-
-# Sign the zipfile
-# 1 is YES | 0 is NO
-SIGN=1
-	if [ $SIGN = 1 ]
-	then
-		#Check for java
-		if command -v java > /dev/null 2>&1; then
-			SIGN=1
-		else
-			SIGN=0
-		fi
-	fi
 
 # Silence the compilation
 # 1 is YES(default) | 0 is NO
@@ -410,7 +400,6 @@ gen_zip() {
 	msg "|| Signing Zip ||"
 	tg_post_msg "<code>🔑 Signing Zip file with AOSP keys..</code>"
  
-	cd AnyKernel3
 	curl -sLo zipsigner-3.0.jar https://github.com/Magisk-Modules-Repo/zipsigner/raw/master/bin/zipsigner-3.0-dexed.jar
 	java -jar zipsigner-3.0.jar "$ZIP_FINAL".zip "$ZIP_FINAL"-signed.zip
 	ZIP_FINAL="$ZIP_FINAL-signed"

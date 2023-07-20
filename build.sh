@@ -198,10 +198,10 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d")
 
 	if [ $COMPILER = "sdclang" ]
 	then
-		msger -n "|| Cloning Clang ||"
+		msger -n "|| Cloning SDClang ||"
 		git clone --depth=1 https://github.com/RyuujiX/SDClang -b 14 sdclang
 
-  		msg "|| Cloning GCC ||"
+  		msger -n "|| Cloning GCC 4.9 ||"
 		git clone --depth=1 https://github.com/Kneba/aarch64-linux-android-4.9 gcc64
 		git clone --depth=1 https://github.com/Kneba/arm-linux-androideabi-4.9 gcc32
   	fi

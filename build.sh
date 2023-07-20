@@ -103,7 +103,7 @@ FILES=Image.gz-dtb
 
 # Build dtbo.img (select this only if your source has support to building dtbo.img)
 # 1 is YES | 0 is NO(default)
-BUILD_DTBO=1
+BUILD_DTBO=0
 if [ $BUILD_DTBO = 1 ]
 then
 	# Set this to your dtbo path.

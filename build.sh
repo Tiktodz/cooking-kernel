@@ -56,7 +56,7 @@ DEFCONFIG=X00TD_defconfig
 MANUFACTURERINFO="ASUSTek Computer Inc."
 
 # Kernel Varian
-NAMA=TheOneMemory
+KERNELNAME=TheOneMemory
 CODENAME=Hayzel
 VARIANT=HMP
 BASE=CLO
@@ -67,6 +67,9 @@ BUILD_TYPE="INCREMENTAL"
 # Specify compiler.
 # 'clang' or 'sdclang' or 'gcc'
 COMPILER=sdclang
+
+# Sign the zipfile
+command -v java > /dev/null 2>&1
 
 # Kernel is LTO
 LTO=0
@@ -96,18 +99,6 @@ FILES=Image.gz-dtb
 # 1 is YES | 0 is NO(default)
 BUILD_DTBO=0
 
-# Sign the zipfile
-# 1 is YES | 0 is NO
-SIGN=1
-	if [ $SIGN = 1 ]
-	then
-		# Check for java
-		if command -v java > /dev/null 2>&1; then
-			SIGN=1
-		else
-			SIGN=0
-		fi
-	fi
 # Silence the compilation
 # 1 is YES(default) | 0 is NO
 SILENCE=0
@@ -372,7 +363,7 @@ gen_zip() {
 	then
 	mv "$KERNEL_DIR"/out/arch/arm64/boot/dtbo.img AnyKernel3/dtbo.img
 	fi
-	cd AnyKernel3 || exit
+	cd AnyKernel3 || exit 1
 	cp -af $KERNEL_DIR/init.HayzelSpectrum.rc spectrum/init.spectrum.rc && sed -i "s/persist.spectrum.kernel.*/persist.spectrum.kernel TheOneMemory/g" spectrum/init.spectrum.rc
 	cp -af $KERNEL_DIR/changelog META-INF/com/google/android/aroma/changelog.txt
 	cp -af anykernel-real.sh anykernel.sh

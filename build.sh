@@ -75,14 +75,14 @@ DEFCONFIG=X00TD_defconfig
 
 # Specify compiler.
 # 'sdclang' or 'gcc'
-COMPILER=sdclang
+COMPILER=gcc
 
 # Build modules. 0 = NO | 1 = YES
 MODULES=0
 
 # Specify linker.
 # 'ld.lld'(default)
-LINKER=ld.lld
+LINKER=ld.bfd
 
 # Clean source prior building. 1 is NO(default) | 0 is YES
 INCREMENTAL=1
@@ -188,8 +188,8 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d")
 	if [ $COMPILER = "gcc" ]
 	then
 		msger -n "|| Cloning GCC 9.3.0 baremetal ||"
-		git clone --depth=1 https://github.com/Kneba/aarch64-linux-android-4.9.git gcc64
-		git clone --depth=1 https://github.com/Kneba/arm-linux-androideabi-4.9.git gcc32
+		git clone --depth=1 https://github.com/Kneba/aarch64-linux-android-4.9 gcc64
+		git clone --depth=1 https://github.com/Kneba/arm-linux-androideabi-4.9 gcc32
   
   		# GCC Directory
 		GCC64_DIR=$KERNEL_DIR/gcc64
@@ -237,7 +237,7 @@ exports()
 		ClangMoreStrings="AR=llvm-ar NM=llvm-nm AS=llvm-as STRIP=llvm-strip OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump READELF=llvm-readelf HOSTAR=llvm-ar HOSTAS=llvm-as LD_LIBRARY_PATH=$TC_DIR/lib LD=ld.lld HOSTLD=ld.lld"
 	elif [ $COMPILER = "gcc" ]
 	then
-		KBUILD_COMPILER_STRING=$("$GCC64_DIR"/bin/aarch64-elf-gcc --version | head -n 1)
+		KBUILD_COMPILER_STRING=$("$GCC64_DIR"/bin/aarch64-linux-android-gcc --version | head -n 1)
 		PATH=$GCC64_DIR/bin/:$GCC32_DIR/bin/:/usr/bin:$PATH
 	fi
 
@@ -314,14 +314,14 @@ build_kernel()
 	elif [ $COMPILER = "gcc" ]
 	then
 		MAKE+=(
-			CROSS_COMPILE_ARM32=arm-eabi- \
-			CROSS_COMPILE=aarch64-elf- \
-			AR=aarch64-elf-ar \
-			OBJDUMP=aarch64-elf-objdump \
-			STRIP=aarch64-elf-strip \
-			NM=aarch64-elf-nm \
-			OBJCOPY=aarch64-elf-objcopy \
-			LD=aarch64-elf-$LINKER
+			CROSS_COMPILE_ARM32=arm-linux-androideabi- \
+			CROSS_COMPILE=aarch64-linux-android- \
+			AR=aarch64-linux-android-ar \
+			OBJDUMP=aarch64-linux-android-objdump \
+			STRIP=aarch64-linux-android-strip \
+			NM=aarch64-linux-android-nm \
+			OBJCOPY=aarch64-linux-android-objcopy \
+			LD=aarch64-linux-android-$LINKER
 		)
 	fi
 

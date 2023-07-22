@@ -50,7 +50,7 @@ BASEDIR="$(basename "$KERNEL_DIR")"
 # Kernel name
 KERNELNAME=TheOneMemory
 CODENAME=Hayzel
-VARIANT=HMP
+VARIANT=EAS
 BASE=CLO
 
 # The name of the Kernel, to name the ZIP
@@ -213,7 +213,7 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d")
 		GCC32_DIR=$KERNEL_DIR/gcc32
 
 	msger -n "|| Cloning Anykernel ||"
-	git clone https://github.com/Tiktodz/AnyKernel3.git -b hmp AnyKernel3
+	git clone https://github.com/Tiktodz/AnyKernel3.git -b eas AnyKernel3
 
 	if [ $BUILD_DTBO = 1 ]
 	then
@@ -380,15 +380,15 @@ gen_zip()
 	mv "$KERNEL_DIR"/out/arch/arm64/boot/dtbo.img AnyKernel3/dtbo.img
 	fi
 	cdir AnyKernel3
-	cp -af $KERNEL_DIR/init.HayzelSpectrum.rc spectrum/init.spectrum.rc && sed -i "s/persist.spectrum.kernel.*/persist.spectrum.kernel TheOneMemory/g" spectrum/init.spectrum.rc
+	cp -af $KERNEL_DIR/init.%CODENAME-Spectrum.rc spectrum/init.spectrum.rc && sed -i "s/persist.spectrum.kernel.*/persist.spectrum.kernel TheOneMemory/g" spectrum/init.spectrum.rc
 	cp -af $KERNEL_DIR/changelog META-INF/com/google/android/aroma/changelog.txt
 	cp -af anykernel-real.sh anykernel.sh
 	sed -i "s/kernel.string=.*/kernel.string=$KERNELNAME/g" anykernel.sh
-	sed -i "s/kernel.type=.*/kernel.type=$LINUXVER/g" anykernel.sh
-	sed -i "s/kernel.for=.*/kernel.for=$KERNELNAME-$CODENAME/g" anykernel.sh
+	sed -i "s/kernel.type=.*/kernel.type=$KERNELNAME-$CODENAME/g" anykernel.sh
+	sed -i "s/kernel.for=.*/kernel.for=$MODEL/g" anykernel.sh
 	sed -i "s/kernel.compiler=.*/kernel.compiler=$KBUILD_COMPILER_STRING/g" anykernel.sh
 	sed -i "s/kernel.made=.*/kernel.made=dotkit @fakedotkit/g" anykernel.sh
-	sed -i "s/kernel.version=.*/kernel.version=$LINUXVER/g" anykernel.sh
+	sed -i "s/kernel.version=.*/kernel.version=$KERVER/g" anykernel.sh
 	sed -i "s/message.word=.*/message.word=Appreciate your efforts for choosing TheOneMemory kernel./g" anykernel.sh
 	sed -i "s/build.date=.*/build.date=$DATE/g" anykernel.sh
 	sed -i "s/build.type=.*/build.type=$CODENAME/g" anykernel.sh
@@ -401,7 +401,7 @@ gen_zip()
 	sed -i "s/X00TD=.*/X00TD=1/g" anykernel.sh
 	cd META-INF/com/google/android
 	sed -i "s/KNAME/$KERNELNAME/g" aroma-config
-	sed -i "s/KVER/$LINUXVER/g" aroma-config
+	sed -i "s/KVER/$KERVER/g" aroma-config
 	sed -i "s/KAUTHOR/dotkit @fakedotkit/g" aroma-config
 	sed -i "s/KDEVICE/Zenfone Max Pro M1/g" aroma-config
 	sed -i "s/KBDATE/$DATE/g" aroma-config

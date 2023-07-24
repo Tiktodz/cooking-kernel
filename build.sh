@@ -385,7 +385,7 @@ gen_zip()
 	cp -af anykernel-real.sh anykernel.sh
 	sed -i "s/kernel.string=.*/kernel.string=$KERNELNAME/g" anykernel.sh
 	sed -i "s/kernel.type=.*/kernel.type=$CODENAME-$VARIANT/g" anykernel.sh
-	sed -i "s/kernel.for=.*/kernel.for=$MODEL/g" anykernel.sh
+	sed -i "s/kernel.for=.*/kernel.for=$CODENAME/g" anykernel.sh
 	sed -i "s/kernel.compiler=.*/kernel.compiler=$KBUILD_COMPILER_STRING/g" anykernel.sh
 	sed -i "s/kernel.made=.*/kernel.made=dotkit @fakedotkit/g" anykernel.sh
 	sed -i "s/kernel.version=.*/kernel.version=$KERVER/g" anykernel.sh
@@ -405,7 +405,7 @@ gen_zip()
 	sed -i "s/KAUTHOR/dotkit @fakedotkit/g" aroma-config
 	sed -i "s/KDEVICE/Zenfone Max Pro M1/g" aroma-config
 	sed -i "s/KBDATE/$DATE/g" aroma-config
-	sed -i "s/KVARIANT/$CODENAME-$VARIANT/g" aroma-config
+	sed -i "s/KVARIANT/$VARIANT/g" aroma-config
 	cd ../../../..
 
 	zip -r9 $ZIPNAME-"$DATE" * -x .git README.md anykernel-real.sh .gitignore zipsigner* "*.zip"

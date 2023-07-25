@@ -4,6 +4,7 @@
  # Script For Building Android arm64 Kernel
  #
  # Copyright (c) 2018-2021 Panchajanya1999 <rsk52959@gmail.com>
+ # Copyright (c) 2021-2023 dotkit <ewprjkt@proton.me>
  #
  # Licensed under the Apache License, Version 2.0 (the "License");
  # you may not use this file except in compliance with the License.
@@ -51,7 +52,7 @@ BASEDIR="$(basename "$KERNEL_DIR")"
 KERNELNAME=TheOneMemory
 CODENAME=Hayzel
 VARIANT=EAS
-BASE=EOL
+BASE=CLO
 
 # The name of the Kernel, to name the ZIP
 ZIPNAME="$KERNELNAME-$CODENAME-$VARIANT-$BASE"
@@ -380,11 +381,11 @@ gen_zip()
 	mv "$KERNEL_DIR"/out/arch/arm64/boot/dtbo.img AnyKernel3/dtbo.img
 	fi
 	cdir AnyKernel3
-	cp -af $KERNEL_DIR/init.HayzelSpectrum.rc spectrum/init.spectrum.rc && sed -i "s/persist.spectrum.kernel.*/persist.spectrum.kernel TheOneMemory/g" spectrum/init.spectrum.rc
+	cp -af $KERNEL_DIR/init.$CODENAME-Spectrum.rc spectrum/init.spectrum.rc && sed -i "s/persist.spectrum.kernel.*/persist.spectrum.kernel TheOneMemory/g" spectrum/init.spectrum.rc
 	cp -af $KERNEL_DIR/changelog META-INF/com/google/android/aroma/changelog.txt
 	cp -af anykernel-real.sh anykernel.sh
 	sed -i "s/kernel.string=.*/kernel.string=$KERNELNAME/g" anykernel.sh
-	sed -i "s/kernel.type=.*/kernel.type=$CODENAME-$VARIANT/g" anykernel.sh
+	sed -i "s/kernel.type=.*/kernel.type=$VARIANT/g" anykernel.sh
 	sed -i "s/kernel.for=.*/kernel.for=$CODENAME/g" anykernel.sh
 	sed -i "s/kernel.compiler=.*/kernel.compiler=$KBUILD_COMPILER_STRING/g" anykernel.sh
 	sed -i "s/kernel.made=.*/kernel.made=dotkit @fakedotkit/g" anykernel.sh

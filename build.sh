@@ -51,8 +51,8 @@ BASEDIR="$(basename "$KERNEL_DIR")"
 # Kernel name
 KERNELNAME=TheOneMemory
 CODENAME=Hayzel
-VARIANT=EAS
-BASE=CLO
+VARIANT=HMP
+BASE=EOL
 
 # The name of the Kernel, to name the ZIP
 ZIPNAME="$KERNELNAME-$CODENAME-$VARIANT-$BASE"
@@ -214,7 +214,7 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d")
 		GCC32_DIR=$KERNEL_DIR/gcc32
 
 	msger -n "|| Cloning Anykernel ||"
-	git clone https://github.com/Tiktodz/AnyKernel3.git -b eas AnyKernel3
+	git clone https://github.com/Tiktodz/AnyKernel3.git -b hmp AnyKernel3
 
 	if [ $BUILD_DTBO = 1 ]
 	then
@@ -392,7 +392,7 @@ gen_zip()
 	sed -i "s/kernel.version=.*/kernel.version=$KERVER/g" anykernel.sh
 	sed -i "s/message.word=.*/message.word=Appreciate your efforts for choosing TheOneMemory kernel./g" anykernel.sh
 	sed -i "s/build.date=.*/build.date=$DATE/g" anykernel.sh
-	sed -i "s/build.type=.*/build.type=$CODENAME/g" anykernel.sh
+	sed -i "s/build.type=.*/build.type=$BASE/g" anykernel.sh
 	sed -i "s/supported.versions=.*/supported.versions=9-13/g" anykernel.sh
 	sed -i "s/device.name1=.*/device.name1=X00TD/g" anykernel.sh
 	sed -i "s/device.name2=.*/device.name2=X00T/g" anykernel.sh

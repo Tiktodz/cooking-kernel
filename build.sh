@@ -188,11 +188,11 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d")
 	echo " "
 	if [ $COMPILER = "gcc" ]
 	then
-		msger -n "|| Cloning GCC 9.3.0 baremetal ||"
+		msger -n "|| Cloning GCC ||"
 		git clone --depth=1 https://github.com/Kneba/aarch64-linux-android-4.9 gcc64
 		git clone --depth=1 https://github.com/Kneba/arm-linux-androideabi-4.9 gcc32
   
-  		# GCC Directory
+  		# Toolchain Directory defaults to gcc
 		GCC64_DIR=$KERNEL_DIR/gcc64
 		GCC32_DIR=$KERNEL_DIR/gcc32
 	fi
@@ -205,13 +205,14 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d")
   		msger -n "|| Cloning GCC 4.9 ||"
 		git clone --depth=1 https://github.com/Kneba/aarch64-linux-android-4.9 gcc64
 		git clone --depth=1 https://github.com/Kneba/arm-linux-androideabi-4.9 gcc32
-  	fi
+
 		# Toolchain Directory defaults to sdclang
 		TC_DIR=$KERNEL_DIR/sdclang
   
-		# GCC Directory
+		# Toolchain Directory defaults to gcc
 		GCC64_DIR=$KERNEL_DIR/gcc64
 		GCC32_DIR=$KERNEL_DIR/gcc32
+  	fi
 
 	msger -n "|| Cloning Anykernel ||"
 	git clone https://github.com/Tiktodz/AnyKernel3.git -b hmp AnyKernel3

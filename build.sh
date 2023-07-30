@@ -50,7 +50,7 @@ BASEDIR="$(basename "$KERNEL_DIR")"
 
 # Kernel name
 KERNELNAME=TheOneMemory
-CODENAME=Onyx
+CODENAME=Hayzel
 VARIANT=HMP
 BASE=EOL
 

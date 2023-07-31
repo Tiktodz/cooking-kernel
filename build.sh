@@ -52,7 +52,7 @@ BASEDIR="$(basename "$KERNEL_DIR")"
 KERNELNAME=TheOneMemory
 CODENAME=Hayzel
 VARIANT=HMP
-BASE=EOL
+BASE=CLO
 
 # The name of the Kernel, to name the ZIP
 ZIPNAME="$KERNELNAME-$CODENAME-$VARIANT-$BASE"

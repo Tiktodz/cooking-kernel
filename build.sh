@@ -426,7 +426,6 @@ gen_zip()
 		curl -sLo zipsigner-3.0.jar https://github.com/Magisk-Modules-Repo/zipsigner/raw/master/bin/zipsigner-3.0-dexed.jar
 		java -jar zipsigner-3.0.jar "$ZIP_FINAL".zip "$ZIP_FINAL"-signed.zip
 		ZIP_FINAL="$ZIP_FINAL-signed"
-		gh release upload '$ZIP_FINAL.zip' -R github.com/Tiktodz/android_kernel_asus_sdm636
 	fi
 
 	if [ "$PTTG" = 1 ]

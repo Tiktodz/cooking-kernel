@@ -51,8 +51,8 @@ BASEDIR="$(basename "$KERNEL_DIR")"
 # Kernel name
 KERNELNAME=TheOneMemory
 CODENAME=Hayzel
-VARIANT=HMP
-BASE=CLO
+VARIANT=EAS
+BASE=EOL
 
 # The name of the Kernel, to name the ZIP
 ZIPNAME="$KERNELNAME-$CODENAME-$VARIANT-$BASE"
@@ -215,7 +215,7 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d")
   	fi
 
 	msger -n "|| Cloning Anykernel ||"
-	git clone https://github.com/Tiktodz/AnyKernel3.git -b hmp AnyKernel3
+	git clone https://github.com/Tiktodz/AnyKernel3.git -b eas AnyKernel3
 
 	if [ $BUILD_DTBO = 1 ]
 	then

@@ -19,7 +19,7 @@
  # limitations under the License.
  #
 
-#Kernel building script
+# Kernel building script
 
 # Bail out if script fails
 set -e

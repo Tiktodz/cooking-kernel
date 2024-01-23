@@ -21,9 +21,6 @@
 
 # Kernel building script
 
-# Bail out if script fails
-set -e
-
 # Function to show an informational message
 msger()
 {
@@ -58,7 +55,7 @@ BASE=CLO
 CL_URL="https://github.com/Tiktodz/android_kernel_asus_sdm636/commits/staging"
 
 # The name of the Kernel, to name the ZIP
-ZIPNAME="$KERNELNAME-$CODENAME-$VARIANT-$BASE"
+ZIPNAME="$KERNELNAME-$VARIANT-$BASE"
 
 # Build Author
 # Take care, it should be a universal and most probably, case-sensitive
@@ -139,7 +136,7 @@ VERBOSE=0
 
 # Debug purpose. Send logs on every successfull builds
 # 1 is YES | 0 is NO(default)
-LOG_DEBUG=0
+LOG_DEBUG=1
 
 ##------------------------------------------------------##
 ##---------Do Not Touch Anything Beyond This------------##
@@ -369,6 +366,7 @@ build_kernel()
 			if [ "$PTTG" = 1 ]
  			then
 				tg_post_build "error.log" "*Build failed to compile after $((DIFF / 60)) minute(s) and $((DIFF % 60)) seconds*"
+                                exit 2
 			fi
 		fi
 

@@ -48,14 +48,14 @@ BASEDIR="$(basename "$KERNEL_DIR")"
 # Kernel name
 KERNELNAME=TheOneMemory
 CODENAME=Hayzel
-VARIANT=Staging
+VARIANT=HMP
 BASE=CLO
 
 # Changelogs
-CL_URL="https://github.com/Tiktodz/android_kernel_asus_sdm636/commits/staging"
+CL_URL="https://github.com/Tiktodz/android_kernel_asus_sdm636/commits/codelinaro-hmp"
 
 # The name of the Kernel, to name the ZIP
-ZIPNAME="$KERNELNAME-$VARIANT-$BASE"
+ZIPNAME="$KERNELNAME-$BASE-$VARIANT"
 
 # Build Author
 # Take care, it should be a universal and most probably, case-sensitive

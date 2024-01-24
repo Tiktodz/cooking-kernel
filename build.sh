@@ -76,14 +76,14 @@ DEFCONFIG=X00TD_defconfig
 
 # Specify compiler.
 # 'sdclang' or 'gcc'
-COMPILER=sdclang
+COMPILER=gcc
 
 # Build modules. 0 = NO | 1 = YES
 MODULES=0
 
 # Specify linker.
-# 'ld.lld'(default)
-LINKER=ld.lld
+# 'ld.lld'(default) Change to 'ld.bfd' for GCC compiler
+LINKER=ld.bfd
 
 # Clean source prior building. 1 is NO(default) | 0 is YES
 INCREMENTAL=1
@@ -189,8 +189,8 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%H%M")
 	if [ $COMPILER = "gcc" ]
 	then
 		msger -n "|| Cloning GCC ||"
-		git clone --depth=1 https://github.com/Kneba/aarch64-linux-android-4.9 gcc64
-		git clone --depth=1 https://github.com/Kneba/arm-linux-androideabi-4.9 gcc32
+		git clone --depth=1 https://github.com/KudProject/aarch64-linux-android-4.9 gcc64
+		git clone --depth=1 https://github.com/KudProject/arm-linux-androideabi-4.9 gcc32
   
   		# Toolchain Directory defaults to gcc
 		GCC64_DIR=$KERNEL_DIR/gcc64

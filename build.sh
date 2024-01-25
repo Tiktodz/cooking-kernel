@@ -75,8 +75,8 @@ DEVICE="X00TD"
 DEFCONFIG=X00TD_defconfig
 
 # Specify compiler.
-# 'sdclang' or 'gcc'
-COMPILER=gcc
+# 'sdclang' or 'gcc' or 'gcc10'
+COMPILER=gcc10
 
 # Build modules. 0 = NO | 1 = YES
 MODULES=0
@@ -188,16 +188,25 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%H%M")
 	echo " "
 	if [ $COMPILER = "gcc" ]
 	then
-		msger -n "|| Cloning GCC ||"
+		msger -n "|| Cloning GCC 4.9 ||"
 		git clone --depth=1 https://github.com/KudProject/aarch64-linux-android-4.9 gcc64
 		git clone --depth=1 https://github.com/KudProject/arm-linux-androideabi-4.9 gcc32
   
   		# Toolchain Directory defaults to gcc
 		GCC64_DIR=$KERNEL_DIR/gcc64
 		GCC32_DIR=$KERNEL_DIR/gcc32
-	fi
 
-	if [ $COMPILER = "sdclang" ]
+	elif [ $COMPILER = "gcc10" ]
+	then
+		msger -n "|| Cloning GCC 10.2 ||"
+		git clone --depth=1 https://github.com/Kyvangka1610/gcc-arm-10.2-2020.11-x86_64-aarch64-none-linux-gnu -b master gcc64
+		git clone --depth=1 https://github.com/Kyvangka1610/gcc-arm-10.2-2020.11-x86_64-arm-none-linux-gnueabihf -b master gcc32
+  
+  		# Toolchain Directory defaults to gcc
+		GCC64_DIR=$KERNEL_DIR/gcc64
+		GCC32_DIR=$KERNEL_DIR/gcc32
+
+	elif [ $COMPILER = "sdclang" ]
 	then
 		msger -n "|| Cloning SDClang ||"
 		git clone --depth=1 https://github.com/RyuujiX/SDClang -b 14 sdclang
@@ -237,9 +246,15 @@ exports()
 		KBUILD_COMPILER_STRING="$CLANG_VER X GCC 4.9"
 		PATH=$GCC64_DIR/bin/:$GCC32_DIR/bin/:/usr/bin:$PATH
 		ClangMoreStrings="AR=llvm-ar NM=llvm-nm AS=llvm-as STRIP=llvm-strip OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump READELF=llvm-readelf HOSTAR=llvm-ar HOSTAS=llvm-as LD_LIBRARY_PATH=$TC_DIR/lib LD=ld.lld HOSTLD=ld.lld"
-	elif [ $COMPILER = "gcc" ]
+	fi
+	if [ $COMPILER = "gcc" ]
 	then
 		KBUILD_COMPILER_STRING=$("$GCC64_DIR"/bin/aarch64-linux-android-gcc --version | head -n 1)
+		PATH=$GCC64_DIR/bin/:$GCC32_DIR/bin/:/usr/bin:$PATH
+	fi
+	if [ $COMPILER = "gcc10" ]
+	then
+		KBUILD_COMPILER_STRING=$("$GCC64_DIR"/bin/aarch64-none-linux-gnu-gcc --version | head -n 1)
 		PATH=$GCC64_DIR/bin/:$GCC32_DIR/bin/:/usr/bin:$PATH
 	fi
 
@@ -324,6 +339,12 @@ build_kernel()
 			NM=aarch64-linux-android-nm \
 			OBJCOPY=aarch64-linux-android-objcopy \
 			LD=aarch64-linux-android-$LINKER
+		)
+	elif [ $COMPILER = "gcc10" ]
+	then
+		MAKE+=(
+			CROSS_COMPILE_ARM32=arm-none-linux-gnueabihf- \
+			CROSS_COMPILE=aarch64-none-linux-gnu-
 		)
 	fi
 

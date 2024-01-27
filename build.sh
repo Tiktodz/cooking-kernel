@@ -199,8 +199,8 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%H%M")
 	elif [ $COMPILER = "eva" ]
 	then
 		msger -n "|| Cloning eva GCC ||"
-		git clone --depth=1 https://github.com/mvaisakh/gcc-arm64.git -b gcc-master gcc64
-		git clone --depth=1 https://github.com/mvaisakh/gcc-arm.git -b gcc-master gcc32
+		git clone --depth=1 https://github.com/Havoc-Devices/gcc-arm64.git -b gcc-master gcc64
+		git clone --depth=1 https://github.com/Havoc-Devices/gcc-arm.git -b gcc-master gcc32
   
   		# Toolchain Directory defaults to gcc
 		GCC64_DIR=$KERNEL_DIR/gcc64

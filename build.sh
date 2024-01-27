@@ -76,7 +76,7 @@ DEFCONFIG=X00TD_defconfig
 
 # Specify compiler.
 # 'sdclang' or 'gcc' or 'eva'
-COMPILER=sdclang
+COMPILER=eva
 
 # Build modules. 0 = NO | 1 = YES
 MODULES=0
@@ -199,8 +199,8 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%H%M")
 	elif [ $COMPILER = "eva" ]
 	then
 		msger -n "|| Cloning eva GCC ||"
-		git clone --depth=1 https://github.com/Havoc-Devices/gcc-arm64.git -b gcc-master gcc64
-		git clone --depth=1 https://github.com/Havoc-Devices/gcc-arm.git -b gcc-master gcc32
+		git clone --depth=1 https://github.com/najahiiii/aarch64-linux-gnu.git -b linaro8-20190402 gcc64
+		git clone --depth=1 https://github.com/innfinite4evr/android-prebuilts-gcc-linux-x86-arm-arm-eabi-7.2.git -b master gcc32
   
   		# Toolchain Directory defaults to gcc
 		GCC64_DIR=$KERNEL_DIR/gcc64
@@ -252,7 +252,7 @@ exports()
 		PATH=$GCC64_DIR/bin/:$GCC32_DIR/bin/:/usr/bin:$PATH
 	elif [ $COMPILER = "eva" ]
 	then
-		KBUILD_COMPILER_STRING=$("$GCC64_DIR"/bin/aarch64-elf-gcc --version | head -n 1)
+		KBUILD_COMPILER_STRING="Linaro GCC 8.3-2019.03~dev"
 		PATH=$GCC64_DIR/bin/:$GCC32_DIR/bin/:/usr/bin:$PATH
 	fi
 
@@ -341,12 +341,8 @@ build_kernel()
 	elif [ $COMPILER = "eva" ]
 	then
 		MAKE+=(
-			CROSS_COMPILE_ARM32=arm-eabi- \
-			CROSS_COMPILE=aarch64-elf- \
-   			AR=aarch64-elf-ar \
-			OBJDUMP=aarch64-elf-objdump \
-			STRIP=aarch64-elf-strip  \
-			LD="$LINKER"
+			CROSS_COMPILE_ARM32=$GCC32_DIR/bin/arm-eabi- \
+			CROSS_COMPILE=aarch64-linux-gnu-
 		)
 	fi
 

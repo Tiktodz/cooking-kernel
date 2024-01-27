@@ -49,10 +49,10 @@ BASEDIR="$(basename "$KERNEL_DIR")"
 KERNELNAME=TheOneMemory
 CODENAME=Hayzel
 VARIANT=HMP
-BASE=CLO
+BASE=EOL
 
 # Changelogs
-CL_URL="https://github.com/Tiktodz/android_kernel_asus_sdm636/commits/codelinaro-hmp"
+CL_URL="https://github.com/Tiktodz/android_kernel_asus_sdm636/commits/darkonah"
 
 # The name of the Kernel, to name the ZIP
 ZIPNAME="$KERNELNAME-$BASE-$VARIANT"
@@ -76,7 +76,7 @@ DEFCONFIG=X00TD_defconfig
 
 # Specify compiler.
 # 'sdclang' or 'gcc' or 'eva'
-COMPILER=eva
+COMPILER=sdclang
 
 # Build modules. 0 = NO | 1 = YES
 MODULES=0

@@ -341,7 +341,7 @@ build_kernel()
 	elif [ $COMPILER = "eva" ]
 	then
 		MAKE+=(
-			CROSS_COMPILE_ARM32=$GCC32_DIR/bin/arm-eabi- \
+			CROSS_COMPILE_ARM32=arm-eabi- \
 			CROSS_COMPILE=aarch64-linux-gnu-
 		)
 	fi

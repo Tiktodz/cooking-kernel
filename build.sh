@@ -75,8 +75,8 @@ DEVICE="X00TD"
 DEFCONFIG=X00TD_defconfig
 
 # Specify compiler.
-# 'sdclang' or 'gcc' or 'gcc10'
-COMPILER=sdclang
+# 'sdclang' or 'gcc' or 'eva'
+COMPILER=eva
 
 # Build modules. 0 = NO | 1 = YES
 MODULES=0
@@ -196,11 +196,11 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%H%M")
 		GCC64_DIR=$KERNEL_DIR/gcc64
 		GCC32_DIR=$KERNEL_DIR/gcc32
 
-	elif [ $COMPILER = "gcc10" ]
+	elif [ $COMPILER = "eva" ]
 	then
-		msger -n "|| Cloning GCC 10.2 ||"
-		git clone --depth=1 https://github.com/Kyvangka1610/gcc-arm-10.2-2020.11-x86_64-aarch64-none-linux-gnu -b master gcc64
-		git clone --depth=1 https://github.com/Kyvangka1610/gcc-arm-10.2-2020.11-x86_64-arm-none-linux-gnueabihf -b master gcc32
+		msger -n "|| Cloning eva GCC ||"
+		git clone --depth=1 https://github.com/mvaisakh/gcc-arm64.git -b gcc-master gcc64
+		git clone --depth=1 https://github.com/mvaisakh/gcc-arm.git -b gcc-master gcc32
   
   		# Toolchain Directory defaults to gcc
 		GCC64_DIR=$KERNEL_DIR/gcc64
@@ -250,9 +250,9 @@ exports()
 	then
 		KBUILD_COMPILER_STRING=$("$GCC64_DIR"/bin/aarch64-linux-android-gcc --version | head -n 1)
 		PATH=$GCC64_DIR/bin/:$GCC32_DIR/bin/:/usr/bin:$PATH
-	elif [ $COMPILER = "gcc10" ]
+	elif [ $COMPILER = "eva" ]
 	then
-		KBUILD_COMPILER_STRING=$("$GCC64_DIR"/bin/aarch64-none-linux-gnu-gcc --version | head -n 1)
+		KBUILD_COMPILER_STRING=$("$GCC64_DIR"/bin/aarch64-elf-gcc --version | head -n 1)
 		PATH=$GCC64_DIR/bin/:$GCC32_DIR/bin/:/usr/bin:$PATH
 	fi
 
@@ -338,11 +338,15 @@ build_kernel()
 			OBJCOPY=aarch64-linux-android-objcopy \
 			LD=aarch64-linux-android-$LINKER
 		)
-	elif [ $COMPILER = "gcc10" ]
+	elif [ $COMPILER = "eva" ]
 	then
 		MAKE+=(
-			CROSS_COMPILE_ARM32=arm-none-linux-gnueabihf- \
-			CROSS_COMPILE=aarch64-none-linux-gnu-
+			CROSS_COMPILE_ARM32=arm-eabi- \
+			CROSS_COMPILE=aarch64-elf- \
+   			AR=aarch64-elf-ar \
+			OBJDUMP=aarch64-elf-objdump \
+			STRIP=aarch64-elf-strip  \
+			LD=aarch64-elf-$LINKER
 		)
 	fi
 

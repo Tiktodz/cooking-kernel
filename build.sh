@@ -49,7 +49,7 @@ BASEDIR="$(basename "$KERNEL_DIR")"
 KERNELNAME=TheOneMemory
 CODENAME=Rebase
 VARIANT=EAS
-BASE=CLO
+BASE=EOL
 
 # Changelogs
 CL_URL="https://github.com/Tiktodz/android_kernel_asus_sdm636/commits/darkonah"

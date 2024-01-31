@@ -47,12 +47,12 @@ BASEDIR="$(basename "$KERNEL_DIR")"
 
 # Kernel name
 KERNELNAME=TheOneMemory
-CODENAME=Hayzel
-VARIANT=HMP
+CODENAME=Rebase
+VARIANT=EAS
 BASE=CLO
 
 # Changelogs
-CL_URL="https://github.com/Tiktodz/android_kernel_asus_sdm636/commits/codelinaro-hmp"
+CL_URL="https://github.com/Tiktodz/android_kernel_asus_sdm636/commits/darkonah"
 
 # The name of the Kernel, to name the ZIP
 ZIPNAME="$KERNELNAME-$BASE-$VARIANT"
@@ -76,14 +76,14 @@ DEFCONFIG=X00TD_defconfig
 
 # Specify compiler.
 # 'sdclang' or 'gcc' or 'eva'
-COMPILER=sdclang
+COMPILER=gcc
 
 # Build modules. 0 = NO | 1 = YES
 MODULES=0
 
 # Specify linker.
 # 'ld.lld'(default) Change to 'ld.bfd' for GCC compiler
-LINKER=ld.lld
+LINKER=ld.bfd
 
 # Clean source prior building. 1 is NO(default) | 0 is YES
 INCREMENTAL=1
@@ -224,7 +224,7 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%H%M")
   	fi
 
 	msger -n "|| Cloning Anykernel ||"
-	git clone https://github.com/Tiktodz/AnyKernel3.git -b hmp AnyKernel3
+	git clone https://github.com/Tiktodz/AnyKernel3.git -b eas AnyKernel3
 
 	if [ $BUILD_DTBO = 1 ]
 	then

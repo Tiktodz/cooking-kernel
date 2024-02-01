@@ -20,6 +20,7 @@
  #
 
 # Kernel building script
+set -e
 
 # Function to show an informational message
 msger()
@@ -47,7 +48,7 @@ BASEDIR="$(basename "$KERNEL_DIR")"
 
 # Kernel name
 KERNELNAME=TheOneMemory
-CODENAME=Rebase
+CODENAME=Hayzel
 VARIANT=EAS
 BASE=EOL
 
@@ -136,7 +137,7 @@ VERBOSE=0
 
 # Debug purpose. Send logs on every successfull builds
 # 1 is YES | 0 is NO(default)
-LOG_DEBUG=1
+LOG_DEBUG=0
 
 ##------------------------------------------------------##
 ##---------Do Not Touch Anything Beyond This------------##
@@ -385,7 +386,6 @@ build_kernel()
 			if [ "$PTTG" = 1 ]
  			then
 				tg_post_build "error.log" "*Build failed to compile after $((DIFF / 60)) minute(s) and $((DIFF % 60)) seconds*"
-                                exit 2
 			fi
 		fi
 

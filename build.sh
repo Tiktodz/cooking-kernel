@@ -50,10 +50,10 @@ BASEDIR="$(basename "$KERNEL_DIR")"
 KERNELNAME=TheOneMemory
 CODENAME=Hayzel
 VARIANT=EAS
-BASE=EOL
+BASE=CLO
 
 # Changelogs
-CL_URL="https://github.com/Tiktodz/android_kernel_asus_sdm636/commits/darkonah"
+CL_URL="https://github.com/Tiktodz/android_kernel_asus_sdm636/commits/codelinaro-eas"
 
 # The name of the Kernel, to name the ZIP
 ZIPNAME="$KERNELNAME-$BASE-$VARIANT"

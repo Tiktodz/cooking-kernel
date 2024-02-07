@@ -77,7 +77,7 @@ DEFCONFIG=X00TD_defconfig
 
 # Specify compiler.
 # 'sdclang' or 'gcc' or 'clang'
-COMPILER=clang
+COMPILER=sdclang
 
 # Build modules. 0 = NO | 1 = YES
 MODULES=0

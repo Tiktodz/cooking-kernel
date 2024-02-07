@@ -76,8 +76,8 @@ DEVICE="X00TD"
 DEFCONFIG=X00TD_defconfig
 
 # Specify compiler.
-# 'sdclang' or 'gcc' or 'eva'
-COMPILER=sdclang
+# 'sdclang' or 'gcc' or 'clang'
+COMPILER=clang
 
 # Build modules. 0 = NO | 1 = YES
 MODULES=0
@@ -197,15 +197,13 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%H%M")
 		GCC64_DIR=$KERNEL_DIR/gcc64
 		GCC32_DIR=$KERNEL_DIR/gcc32
 
-	elif [ $COMPILER = "eva" ]
+	elif [ $COMPILER = "clang" ]
 	then
-		msger -n "|| Cloning eva GCC ||"
-		git clone --depth=1 https://github.com/najahiiii/aarch64-linux-gnu.git -b linaro8-20190402 gcc64
-		git clone --depth=1 https://github.com/innfinite4evr/android-prebuilts-gcc-linux-x86-arm-arm-eabi-7.2.git -b master gcc32
-  
-  		# Toolchain Directory defaults to gcc
-		GCC64_DIR=$KERNEL_DIR/gcc64
-		GCC32_DIR=$KERNEL_DIR/gcc32
+		msger -n "|| Cloning StRess clang ||"
+                git clone --depth=1 https://gitlab.com/strongreasons/stress-clang.git clang
+
+  		# Toolchain Directory defaults to clang
+	        TC_DIR=$KERNEL_DIR/clang
 
 	elif [ $COMPILER = "sdclang" ]
 	then
@@ -251,10 +249,13 @@ exports()
 	then
 		KBUILD_COMPILER_STRING=$("$GCC64_DIR"/bin/aarch64-linux-android-gcc --version | head -n 1)
 		PATH=$GCC64_DIR/bin/:$GCC32_DIR/bin/:/usr/bin:$PATH
-	elif [ $COMPILER = "eva" ]
+	elif [ $COMPILER = "clang" ]
 	then
-		KBUILD_COMPILER_STRING="Linaro GCC 8.3-2019.03~dev"
-		PATH=$GCC64_DIR/bin/:$GCC32_DIR/bin/:/usr/bin:$PATH
+                CLANG_VER="$("$TC_DIR"/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')"
+                LLD_VER="$("$TC_DIR"/bin/ld.lld --version | head -n 1)"
+                KBUILD_COMPILER_STRING="$CLANG_VER with $LLD_VER"
+                LD_LIBRARY_PATH="${TC_DIR}/lib64:${LD_LIBRARY_PATH}"
+                PATH=$TC_DIR/bin:${PATH}
 	fi
 
 	BOT_MSG_URL="https://api.telegram.org/bot$TG_TOKEN/sendMessage"
@@ -339,11 +340,22 @@ build_kernel()
 			OBJCOPY=aarch64-linux-android-objcopy \
 			LD=aarch64-linux-android-$LINKER
 		)
-	elif [ $COMPILER = "eva" ]
+	elif [ $COMPILER = "clang" ]
 	then
 		MAKE+=(
-			CROSS_COMPILE_ARM32=arm-eabi- \
-			CROSS_COMPILE=aarch64-linux-gnu-
+			CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
+			CROSS_COMPILE=aarch64-linux-gnu- \
+                        CC=clang \
+                        AR=llvm-ar \
+                        OBJDUMP=llvm-objdump \
+                        STRIP=llvm-strip \
+                        NM=llvm-nm \
+                        OBJCOPY=llvm-objcopy \
+                        READELF=llvm-readelf \
+                        HOSTAR=llvm-ar \
+                        HOSTAS=llvm-as \
+                        HOSTLD=$LINKER \
+                        LD="$LINKER"
 		)
 	fi
 

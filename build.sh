@@ -48,7 +48,7 @@ BASEDIR="$(basename "$KERNEL_DIR")"
 
 # Kernel name
 KERNELNAME=TheOneMemory
-CODENAME=Hayzel
+CODENAME=Stable
 VARIANT=HMP
 BASE=CLO
 

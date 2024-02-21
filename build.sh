@@ -78,14 +78,14 @@ DEFCONFIG=X00TD_defconfig
 
 # Specify compiler.
 # 'sdclang' or 'gcc' or 'trbclang'
-COMPILER=trbclang
+COMPILER=gcc
 
 # Build modules. 0 = NO | 1 = YES
 MODULES=0
 
 # Specify linker.
 # 'ld.lld'(default) Change to 'ld.bfd' for GCC compiler
-LINKER=ld.lld
+LINKER=ld.bfd
 
 # Clean source prior building. 1 is NO(default) | 0 is YES
 INCREMENTAL=1

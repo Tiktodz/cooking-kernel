@@ -350,7 +350,6 @@ build_kernel()
 			AR=llvm-ar \
 			STRIP=llvm-strip \
 			HOST_PREFIX=llvm-objcopy \
-			OBJCOPY=llvm-objcopy \
 			OBJDUMP=llvm-objdump \
 			OBJSIZE=llvm-size \
 			READELF=llvm-readelf \

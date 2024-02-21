@@ -77,8 +77,8 @@ DEVICE="X00TD"
 DEFCONFIG=X00TD_defconfig
 
 # Specify compiler.
-# 'sdclang' or 'gcc' or 'clang'
-COMPILER=sdclang
+# 'sdclang' or 'gcc' or 'trbclang'
+COMPILER=trbclang
 
 # Build modules. 0 = NO | 1 = YES
 MODULES=0
@@ -198,12 +198,12 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%H%M")
 		GCC64_DIR=$KERNEL_DIR/gcc64
 		GCC32_DIR=$KERNEL_DIR/gcc32
 
-	elif [ $COMPILER = "clang" ]
+	elif [ $COMPILER = "trbclang" ]
 	then
-		msger -n "|| Cloning StRess clang ||"
-                git clone --depth=1 https://gitlab.com/strongreasons/stress-clang.git clang
+		msger -n "|| Cloning TheRagingBeast clang ||"
+                git clone --depth=1 https://gitlab.com/varunhardgamer/trb_clang.git -b 17 --single-branch clang
 
-  		# Toolchain Directory defaults to clang
+  		# Toolchain Directory defaults to trbclang
 	        TC_DIR=$KERNEL_DIR/clang
 
 	elif [ $COMPILER = "sdclang" ]
@@ -250,7 +250,7 @@ exports()
 	then
 		KBUILD_COMPILER_STRING=$("$GCC64_DIR"/bin/aarch64-linux-android-gcc --version | head -n 1)
 		PATH=$GCC64_DIR/bin/:$GCC32_DIR/bin/:/usr/bin:$PATH
-	elif [ $COMPILER = "clang" ]
+	elif [ $COMPILER = "trbclang" ]
 	then
                 CLANG_VER="$("$TC_DIR"/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')"
                 LLD_VER="$("$TC_DIR"/bin/ld.lld --version | head -n 1)"
@@ -341,22 +341,24 @@ build_kernel()
 			OBJCOPY=aarch64-linux-android-objcopy \
 			LD=aarch64-linux-android-$LINKER
 		)
-	elif [ $COMPILER = "clang" ]
+	elif [ $COMPILER = "trbclang" ]
 	then
 		MAKE+=(
-			CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
+			CC=clang \
+			NM=llvm-nm \
+			CXX=clang++ \
+			AR=llvm-ar \
+			STRIP=llvm-strip \
+			HOST_PREFIX=llvm-objcopy \
+			OBJCOPY=llvm-objcopy \
+			OBJDUMP=llvm-objdump \
+			OBJSIZE=llvm-size \
+			READELF=llvm-readelf \
 			CROSS_COMPILE=aarch64-linux-gnu- \
-                        CC=clang \
-                        AR=llvm-ar \
-                        OBJDUMP=llvm-objdump \
-                        STRIP=llvm-strip \
-                        NM=llvm-nm \
-                        OBJCOPY=llvm-objcopy \
-                        READELF=llvm-readelf \
-                        HOSTAR=llvm-ar \
-                        HOSTAS=llvm-as \
-                        HOSTLD=$LINKER \
-                        LD="$LINKER"
+			CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
+			HOSTAR=llvm-ar \
+			HOSTCC=clang \
+			HOSTCXX=clang++
 		)
 	fi
 

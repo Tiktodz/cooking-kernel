@@ -2,13 +2,10 @@ version: 2.1
 jobs:
   compile:
    docker:
-      - image: panchajanya1999/archlinux:latest
+      - image: wizardprjkt/archlinux:latest
    steps:
       - run:
-          shell: /bin/bash
           command: |
-            sudo pacman -Sy --noconfirm git bc llvm lld inetutils python3 flex bison libc++ libxml2 python-pipx zip wget cpio jdk-openjdk tzdata
-            sudo ln -s /usr/share/zoneinfo/Asia/Jakarta /etc/localtime && date
             git clone --depth=1 --recursive https://github.com/Tiktodz/android_kernel_asus_sdm636 -b codelinaro-hmp kernel && cd kernel
             curl https://raw.githubusercontent.com/Tiktodz/cooking-kernel/circle/build.sh > run.sh
             source run.sh

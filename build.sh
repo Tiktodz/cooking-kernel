@@ -78,14 +78,14 @@ DEFCONFIG=X00TD_defconfig
 
 # Specify compiler.
 # 'sdclang' or 'gcc' or 'trbclang'
-COMPILER=gcc
+COMPILER=sdclang
 
 # Build modules. 0 = NO | 1 = YES
 MODULES=0
 
 # Specify linker.
 # 'ld.lld'(default) Change to 'ld.bfd' for GCC compiler
-LINKER=ld.bfd
+LINKER=ld.lld
 
 # Clean source prior building. 1 is NO(default) | 0 is YES
 INCREMENTAL=1
@@ -242,8 +242,8 @@ exports()
  
 	if [ $COMPILER = "sdclang" ]
 	then
-		CLANG_VER="Snapdragon clang version 14.1.5"
-		KBUILD_COMPILER_STRING="$CLANG_VER X GCC 4.9"
+		CLANG_VER="Snapdragon clang version LLVM 14.1.5"
+		KBUILD_COMPILER_STRING="$CLANG_VER with gcc 4.9.x prerelease GCC"
 		PATH=$GCC64_DIR/bin/:$GCC32_DIR/bin/:/usr/bin:$PATH
 		ClangMoreStrings="AR=llvm-ar NM=llvm-nm AS=llvm-as STRIP=llvm-strip OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump READELF=llvm-readelf HOSTAR=llvm-ar HOSTAS=llvm-as LD_LIBRARY_PATH=$TC_DIR/lib LD=ld.lld HOSTLD=ld.lld"
 	elif [ $COMPILER = "gcc" ]

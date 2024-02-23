@@ -8,7 +8,7 @@ jobs:
           shell: /bin/bash
           command: |
                  apt-get update -y && apt-get upgrade -y && apt-get install -y apt-utils && apt-get install -y sudo
-                 sudo apt-get install libncurses5 bc bison ca-certificates clang curl default-jre flex gcc git glibc-source lld llvm libc6-dev libssl-dev openssl python-is-python3 wget zip zstd make gcc-arm-linux-gnueabi software-properties-common build-essential libarchive-tools gcc-aarch64-linux-gnu tzdata -y || exit 1
+                 sudo apt-get install bc bison ca-certificates clang curl default-jre flex gcc git glibc-source lld llvm libc6-dev libssl-dev openssl python-is-python3 wget zip zstd make gcc-arm-linux-gnueabi software-properties-common build-essential libarchive-tools gcc-aarch64-linux-gnu tzdata -y || exit 1
                  sudo rm -rf /etc/localtime && sudo ln -s /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
                  git clone --depth=1 --recursive https://$USERNAME:$TOKEN@github.com/Tiktodz/android_kernel_asus_sdm636 kernel && cd kernel
                  curl https://raw.githubusercontent.com/Tiktodz/cooking-kernel/circle/build.sh > run.sh

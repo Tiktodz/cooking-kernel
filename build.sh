@@ -354,13 +354,21 @@ build_kernel()
 	elif [ $COMPILER = "trbclang" ]
 	then
 		MAKE+=(
-			ARCH=$ARCH \
-			SUBARCH=$ARCH \
-			PATH=$TC_DIR/bin:${PATH} \
-			CC=clang \
-			CROSS_COMPILE_COMPAT=aarch64-linux-gnu- \
-			HOSTCC=clang \
-			HOSTCXX=clang++ ${ClangMoreStrings}
+		ARCH=$ARCH \
+		SUBARCH=$ARCH \
+		PATH=$TC_DIR/bin:${PATH} \
+		AS=$TC_DIR/bin/llvm-as \
+		CC=$TC_DIR/bin/clang \
+		LD=$TC_DIR/bin/ld.lld \
+		AR=$TC_DIR/bin/llvm-ar \
+		NM=$TC_DIR/bin/llvm-nm \
+		STRIP=$TC_DIR/bin/llvm-strip \
+		OBJCOPY=$TC_DIR/bin/llvm-objcopy \
+		OBJDUMP=$TC_DIR/bin/llvm-objdump \
+		CLANG_TRIPLE=aarch64-linux-gnu- \
+		CROSS_COMPILE=$TC_DIR/bin/clang \
+                CROSS_COMPILE_COMPAT=$TC_DIR/bin/clang \
+                CROSS_COMPILE_ARM32=$TC_DIR/bin/clang
 		)
 	fi
 

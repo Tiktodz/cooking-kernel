@@ -55,7 +55,7 @@ USERNAME=@fakedotkit
 KERNELNAME=TheOneMemory
 CODENAME=Hayzel # For name of spectrum too
 VARIANT=HMP
-BASE=EOL
+BASE=CLO
 
 # Changelogs
 CL_URL="https://github.com/Tiktodz/android_kernel_asus_sdm636/commits/codelinaro-hmp"
@@ -82,7 +82,7 @@ DEFCONFIG=X00TD_defconfig
 
 # Specify compiler.
 # 'sdclang' or 'gcc' or 'trbclang'
-COMPILER=trbclang
+COMPILER=sdclang
 
 # Build modules. 0 = NO | 1 = YES
 MODULES=0
@@ -248,7 +248,7 @@ exports()
 	if [ $COMPILER = "sdclang" ]
 	then
 		CLANG_VER="Snapdragon clang version 16.1.0"
-		KBUILD_COMPILER_STRING="$CLANG_VER with GCC 4.9.x"
+		KBUILD_COMPILER_STRING="$CLANG_VER"
 		ClangMoreStrings="AR=llvm-ar NM=llvm-nm AS=llvm-as STRIP=llvm-strip OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump READELF=llvm-readelf HOSTAR=llvm-ar HOSTAS=llvm-as LD_LIBRARY_PATH=$TC_DIR/lib LD=ld.lld HOSTLD=ld.lld"
 		export LLVM=1
 		export LLVM_IAS=1

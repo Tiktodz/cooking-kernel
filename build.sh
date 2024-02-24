@@ -82,7 +82,7 @@ DEFCONFIG=X00TD_defconfig
 
 # Specify compiler.
 # 'sdclang' or 'gcc' or 'trbclang'
-COMPILER=sdclang
+COMPILER=trbclang
 
 # Build modules. 0 = NO | 1 = YES
 MODULES=0

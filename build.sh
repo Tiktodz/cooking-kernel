@@ -205,10 +205,10 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%H%M")
 	elif [ $COMPILER = "trbclang" ]
 	then
 		msger -n "|| Cloning TheRagingBeast clang ||"
-		git clone --depth=1 https://gitlab.com/varunhardgamer/trb_clang.git -b 17 --single-branch clang
+		git clone --depth=1 https://gitlab.com/varunhardgamer/trb_clang.git -b 17 --single-branch trbclang
 
   		# Toolchain Directory defaults to trbclang
-		TC_DIR=$KERNEL_DIR/clang
+		TC_DIR=$KERNEL_DIR/trbclang
 
 	elif [ $COMPILER = "sdclang" ]
 	then
@@ -358,7 +358,7 @@ build_kernel()
 			SUBARCH=$ARCH \
 			PATH=$TC_DIR/bin:${PATH} \
 			CC=clang \
-			CROSS_COMPILE=aarch64-linux-gnu- \
+			CROSS_COMPILE_COMPAT=aarch64-linux-gnu- \
 			HOSTCC=clang \
 			HOSTCXX=clang++ ${ClangMoreStrings}
 		)

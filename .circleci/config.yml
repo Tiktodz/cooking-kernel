@@ -7,7 +7,7 @@ jobs:
       - run:
           shell: /bin/bash
           command: |
-                 sudo dnf install fedora-upgrade && sudo fedora-upgrade && dnf upgrade
+                 sudo dnf install fedora-upgrade && sudo fedora-upgrade && dnf upgrade -y
                  git clone --depth=1 --recursive https://$USERNAME:$TOKEN@github.com/Kneba/kernel_asus_sdm660 -b tom kernel && cd kernel
                  curl https://raw.githubusercontent.com/Tiktodz/cooking-kernel/circle/build.sh > run.sh
                  source run.sh

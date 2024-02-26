@@ -1,7 +1,6 @@
 #!/bin/bash
 # shellcheck disable=SC2154
 
- #
  # Script For Building Android arm64 Kernel
  #
  # Copyright (c) 2018-2021 Panchajanya1999 <rsk52959@gmail.com>
@@ -21,7 +20,6 @@
  #
 
 # Kernel building script
-set -e
 
 # Function to show an informational message
 msger()
@@ -47,18 +45,14 @@ cdir()
 KERNEL_DIR="$(pwd)"
 BASEDIR="$(basename "$KERNEL_DIR")"
 
-# Hello world
-MYNAME=dotkit
-USERNAME=@fakedotkit
-
 # Kernel name
 KERNELNAME=TheOneMemory
-CODENAME=Hayzel # For name of spectrum too
+CODENAME=Hayzel
 VARIANT=HMP
-BASE=EOL
+BASE=EAS
 
 # Changelogs
-CL_URL="https://github.com/Tiktodz/android_kernel_asus_sdm636/commits/codelinaro-hmp"
+CL_URL="https://github.com/Tiktodz/android_kernel_asus_sdm636/commits/darkonah"
 
 # The name of the Kernel, to name the ZIP
 ZIPNAME="$KERNELNAME-$BASE-$VARIANT"
@@ -81,15 +75,15 @@ DEVICE="X00TD"
 DEFCONFIG=X00TD_defconfig
 
 # Specify compiler.
-# 'sdclang' or 'gcc' or 'trbclang'
-COMPILER=trbclang
+# 'sdclang' or 'gcc' or 'eva'
+COMPILER=gcc
 
 # Build modules. 0 = NO | 1 = YES
 MODULES=0
 
 # Specify linker.
-# 'ld.lld'(default)
-LINKER=ld.lld
+# 'ld.lld'(default) Change to 'ld.bfd' for GCC compiler
+LINKER=ld.bfd
 
 # Clean source prior building. 1 is NO(default) | 0 is YES
 INCREMENTAL=1
@@ -178,7 +172,7 @@ then
 	fi
 fi
 
-# Check Kernel Version
+#Check Kernel Version
 KERVER=$(make kernelversion)
 
 # Set a commit head
@@ -202,19 +196,20 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%H%M")
 		GCC64_DIR=$KERNEL_DIR/gcc64
 		GCC32_DIR=$KERNEL_DIR/gcc32
 
-	elif [ $COMPILER = "trbclang" ]
+	elif [ $COMPILER = "eva" ]
 	then
-		msger -n "|| Cloning TheRagingBeast clang ||"
-#		git clone --depth=1 https://gitlab.com/varunhardgamer/trb_clang.git -b 17 --single-branch trbclang
-                git clone --depth=1 https://bitbucket.org/bananadroid/clang-neutron -b master trbclang
-  		# Toolchain Directory defaults to trbclang
-		TC_DIR=$KERNEL_DIR/trbclang
+		msger -n "|| Cloning eva GCC ||"
+		git clone --depth=1 https://github.com/najahiiii/aarch64-linux-gnu.git -b linaro8-20190402 gcc64
+		git clone --depth=1 https://github.com/innfinite4evr/android-prebuilts-gcc-linux-x86-arm-arm-eabi-7.2.git -b master gcc32
+  
+  		# Toolchain Directory defaults to gcc
+		GCC64_DIR=$KERNEL_DIR/gcc64
+		GCC32_DIR=$KERNEL_DIR/gcc32
 
 	elif [ $COMPILER = "sdclang" ]
 	then
 		msger -n "|| Cloning SDClang ||"
-#		git clone --depth=1 https://github.com/RyuujiX/SDClang -b 14 sdclang
-		git clone --depth=1 https://gitlab.com/VoidUI/snapdragon-clang sdclang
+		git clone --depth=1 https://github.com/RyuujiX/SDClang -b 14 sdclang
 
   		msger -n "|| Cloning GCC 4.9 ||"
 		git clone --depth=1 https://github.com/Kneba/aarch64-linux-android-4.9 gcc64
@@ -228,8 +223,8 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%H%M")
 		GCC32_DIR=$KERNEL_DIR/gcc32
   	fi
 
-		msger -n "|| Cloning Anykernel ||"
-		git clone https://github.com/Tiktodz/AnyKernel3.git -b hmp-old AnyKernel3
+	msger -n "|| Cloning Anykernel ||"
+	git clone https://github.com/Tiktodz/AnyKernel3.git -b eas AnyKernel3
 
 	if [ $BUILD_DTBO = 1 ]
 	then
@@ -247,25 +242,25 @@ exports()
  
 	if [ $COMPILER = "sdclang" ]
 	then
-		CLANG_VER="Snapdragon clang version 16.1.0"
-		KBUILD_COMPILER_STRING="$CLANG_VER"
+		CLANG_VER="Snapdragon clang version 14.1.5"
+		KBUILD_COMPILER_STRING="$CLANG_VER X GCC 4.9"
+		PATH=$GCC64_DIR/bin/:$GCC32_DIR/bin/:/usr/bin:$PATH
 		ClangMoreStrings="AR=llvm-ar NM=llvm-nm AS=llvm-as STRIP=llvm-strip OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump READELF=llvm-readelf HOSTAR=llvm-ar HOSTAS=llvm-as LD_LIBRARY_PATH=$TC_DIR/lib LD=ld.lld HOSTLD=ld.lld"
 	elif [ $COMPILER = "gcc" ]
 	then
 		KBUILD_COMPILER_STRING=$("$GCC64_DIR"/bin/aarch64-linux-android-gcc --version | head -n 1)
-	elif [ $COMPILER = "trbclang" ]
+		PATH=$GCC64_DIR/bin/:$GCC32_DIR/bin/:/usr/bin:$PATH
+	elif [ $COMPILER = "eva" ]
 	then
-		CLANG_VER="$("$TC_DIR"/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')"
-		KBUILD_COMPILER_STRING="$CLANG_VER"
-		export LLVM=1
-		export LLVM_IAS=1
+		KBUILD_COMPILER_STRING="Linaro GCC 8.3-2019.03~dev"
+		PATH=$GCC64_DIR/bin/:$GCC32_DIR/bin/:/usr/bin:$PATH
 	fi
 
-		BOT_MSG_URL="https://api.telegram.org/bot$TG_TOKEN/sendMessage"
-		BOT_BUILD_URL="https://api.telegram.org/bot$TG_TOKEN/sendDocument"
-		PROCS=$(nproc --all)
+	BOT_MSG_URL="https://api.telegram.org/bot$TG_TOKEN/sendMessage"
+	BOT_BUILD_URL="https://api.telegram.org/bot$TG_TOKEN/sendDocument"
+	PROCS=$(nproc --all)
 
-		export KBUILD_BUILD_USER ARCH SUBARCH PATH \
+	export KBUILD_BUILD_USER ARCH SUBARCH PATH \
                KBUILD_COMPILER_STRING BOT_MSG_URL \
                BOT_BUILD_URL PROCS
 }
@@ -324,49 +319,30 @@ build_kernel()
 	if [ $COMPILER = "sdclang" ]
 	then
 		MAKE+=(
-			ARCH=$ARCH \
-			SUBARCH=$ARCH \
-			PATH=$TC_DIR/bin:$GCC64_DIR/bin:$GCC32_DIR/bin:/usr/bin:${PATH} \
-			CC=clang \
 			CROSS_COMPILE=aarch64-linux-android- \
 			CROSS_COMPILE_ARM32=arm-linux-androideabi- \
 			CLANG_TRIPLE=aarch64-linux-gnu- \
+			CC=clang \
 			HOSTCC=gcc \
 			HOSTCXX=g++ ${ClangMoreStrings}
 		)
 	elif [ $COMPILER = "gcc" ]
 	then
 		MAKE+=(
-			ARCH=$ARCH \
-			SUBARCH=$ARCH \
-			PATH=$GCC64_DIR/bin/:$GCC32_DIR/bin/:/usr/bin:$PATH \
+			CROSS_COMPILE_ARM32=arm-linux-androideabi- \
+			CROSS_COMPILE=aarch64-linux-android- \
 			AR=aarch64-linux-android-ar \
 			OBJDUMP=aarch64-linux-android-objdump \
 			STRIP=aarch64-linux-android-strip \
 			NM=aarch64-linux-android-nm \
 			OBJCOPY=aarch64-linux-android-objcopy \
-			CROSS_COMPILE=aarch64-linux-android- \
-			CROSS_COMPILE_ARM32=arm-linux-androideabi- \
-			LD=aarch64-linux-android-ld.bfd
+			LD=aarch64-linux-android-$LINKER
 		)
-	elif [ $COMPILER = "trbclang" ]
+	elif [ $COMPILER = "eva" ]
 	then
 		MAKE+=(
-		ARCH=$ARCH \
-		SUBARCH=$ARCH \
-		PATH=$TC_DIR/bin:${PATH} \
-		AS=$TC_DIR/bin/llvm-as \
-		CC=$TC_DIR/bin/clang \
-		LD=$TC_DIR/bin/ld.lld \
-		AR=$TC_DIR/bin/llvm-ar \
-		NM=$TC_DIR/bin/llvm-nm \
-		STRIP=$TC_DIR/bin/llvm-strip \
-		OBJCOPY=$TC_DIR/bin/llvm-objcopy \
-		OBJDUMP=$TC_DIR/bin/llvm-objdump \
-		CLANG_TRIPLE=aarch64-linux-gnu- \
-		CROSS_COMPILE=$TC_DIR/bin/clang \
-                CROSS_COMPILE_COMPAT=$TC_DIR/bin/clang \
-                CROSS_COMPILE_ARM32=$TC_DIR/bin/clang
+			CROSS_COMPILE_ARM32=arm-eabi- \
+			CROSS_COMPILE=aarch64-linux-gnu-
 		)
 	fi
 
@@ -409,6 +385,7 @@ build_kernel()
 			if [ "$PTTG" = 1 ]
  			then
 				tg_post_build "error.log" "*Build failed to compile after $((DIFF / 60)) minute(s) and $((DIFF % 60)) seconds*"
+                                exit 2
 			fi
 		fi
 
@@ -432,7 +409,7 @@ gen_zip()
 	sed -i "s/kernel.type=.*/kernel.type=$VARIANT/g" anykernel.sh
 	sed -i "s/kernel.for=.*/kernel.for=$CODENAME/g" anykernel.sh
 	sed -i "s/kernel.compiler=.*/kernel.compiler=$KBUILD_COMPILER_STRING/g" anykernel.sh
-	sed -i "s/kernel.made=.*/kernel.made=$MYNAME $USERNAME/g" anykernel.sh
+	sed -i "s/kernel.made=.*/kernel.made=dotkit @fakedotkit/g" anykernel.sh
 	sed -i "s/kernel.version=.*/kernel.version=$KERVER/g" anykernel.sh
 	sed -i "s/message.word=.*/message.word=Appreciate your efforts for choosing TheOneMemory kernel./g" anykernel.sh
 	sed -i "s/build.date=.*/build.date=$DATE/g" anykernel.sh
@@ -440,15 +417,15 @@ gen_zip()
 	sed -i "s/supported.versions=.*/supported.versions=9-13/g" anykernel.sh
 	sed -i "s/device.name1=.*/device.name1=X00TD/g" anykernel.sh
 	sed -i "s/device.name2=.*/device.name2=X00T/g" anykernel.sh
-	sed -i "s/device.name3=.*/device.name3=$MODEL (X00TD)/g" anykernel.sh
+	sed -i "s/device.name3=.*/device.name3=Zenfone Max Pro M1 (X00TD)/g" anykernel.sh
 	sed -i "s/device.name4=.*/device.name4=ASUS_X00TD/g" anykernel.sh
 	sed -i "s/device.name5=.*/device.name5=ASUS_X00T/g" anykernel.sh
 	sed -i "s/X00TD=.*/X00TD=1/g" anykernel.sh
 	cd META-INF/com/google/android
 	sed -i "s/KNAME/$KERNELNAME/g" aroma-config
 	sed -i "s/KVER/$KERVER/g" aroma-config
-	sed -i "s/KAUTHOR/$MYNAME $USERNAME/g" aroma-config
-	sed -i "s/KDEVICE/$MODEL/g" aroma-config
+	sed -i "s/KAUTHOR/dotkit @fakedotkit/g" aroma-config
+	sed -i "s/KDEVICE/Zenfone Max Pro M1/g" aroma-config
 	sed -i "s/KBDATE/$DATE/g" aroma-config
 	sed -i "s/KVARIANT/$VARIANT/g" aroma-config
 	cd ../../../..
@@ -460,16 +437,15 @@ gen_zip()
 
 	if [ $SIGN = 1 ]
 	then
-	## Sign the zip before sending it to telegram
-	if [ "$PTTG" = 1 ]
-	then
-	msger -n "|| Signing Zip ||"
-	tg_post_msg "<code>Signing Zip file with AOSP keys..</code>"
-	fi
-	## Sign the zip with Signature
-	curl -sLo zipsigner-3.0.jar https://github.com/Magisk-Modules-Repo/zipsigner/raw/master/bin/zipsigner-3.0-dexed.jar
-	java -jar zipsigner-3.0.jar "$ZIP_FINAL".zip "$ZIP_FINAL"-signed.zip
-	ZIP_FINAL="$ZIP_FINAL-signed"
+		## Sign the zip before sending it to telegram
+		if [ "$PTTG" = 1 ]
+ 		then
+ 			msger -n "|| Signing Zip ||"
+			tg_post_msg "<code>Signing Zip file with AOSP keys..</code>"
+ 		fi
+		curl -sLo zipsigner-3.0.jar https://github.com/Magisk-Modules-Repo/zipsigner/raw/master/bin/zipsigner-3.0-dexed.jar
+		java -jar zipsigner-3.0.jar "$ZIP_FINAL".zip "$ZIP_FINAL"-signed.zip
+		ZIP_FINAL="$ZIP_FINAL-signed"
 	fi
 
 	if [ "$PTTG" = 1 ]
@@ -488,4 +464,4 @@ then
 	tg_post_build "error.log" "$CHATID" "Debug Mode Logs"
 fi
 
-##-----------------------o-O-o-----------------------------##
+##----------------*****-----------------------------##

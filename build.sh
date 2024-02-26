@@ -54,7 +54,7 @@ USERNAME=@fakedotkit
 # Kernel name
 KERNELNAME=TheOneMemory
 CODENAME=Hayzel # For name of spectrum too
-VARIANT=EAS
+VARIANT=HMP
 BASE=EOL
 
 # Changelogs
@@ -82,7 +82,7 @@ DEFCONFIG=X00TD_defconfig
 
 # Specify compiler.
 # 'sdclang' or 'gcc' or 'trbclang'
-COMPILER=gcc
+COMPILER=trbclang
 
 # Build modules. 0 = NO | 1 = YES
 MODULES=0
@@ -205,8 +205,8 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%H%M")
 	elif [ $COMPILER = "trbclang" ]
 	then
 		msger -n "|| Cloning TheRagingBeast clang ||"
-		git clone --depth=1 https://gitlab.com/varunhardgamer/trb_clang.git -b 17 --single-branch trbclang
-
+#		git clone --depth=1 https://gitlab.com/varunhardgamer/trb_clang.git -b 17 --single-branch trbclang
+                git clone --depth=1 https://bitbucket.org/bananadroid/clang-neutron -b master trbclang
   		# Toolchain Directory defaults to trbclang
 		TC_DIR=$KERNEL_DIR/trbclang
 
@@ -229,7 +229,7 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%H%M")
   	fi
 
 		msger -n "|| Cloning Anykernel ||"
-		git clone https://github.com/Tiktodz/AnyKernel3.git -b eas AnyKernel3
+		git clone https://github.com/Tiktodz/AnyKernel3.git -b hmp-old AnyKernel3
 
 	if [ $BUILD_DTBO = 1 ]
 	then

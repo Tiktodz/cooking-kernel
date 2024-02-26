@@ -50,8 +50,8 @@ BASEDIR="$(basename "$KERNEL_DIR")"
 # Kernel name
 KERNELNAME=TheOneMemory
 CODENAME=Hayzel
-VARIANT=HMP
-BASE=EAS
+VARIANT=EAS
+BASE=CLO
 
 # Changelogs
 CL_URL="https://github.com/Tiktodz/android_kernel_asus_sdm636/commits/codelinaro-eas"
@@ -321,6 +321,8 @@ build_kernel()
 	if [ $COMPILER = "sdclang" ]
 	then
 		MAKE+=(
+                        ARCH=$ARCH
+			SUBARCH=$ARCH
 			CROSS_COMPILE=aarch64-linux-android- \
 			CROSS_COMPILE_ARM32=arm-linux-androideabi- \
 			CLANG_TRIPLE=aarch64-linux-gnu- \

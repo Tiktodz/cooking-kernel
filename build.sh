@@ -1,6 +1,7 @@
 #!/bin/bash
 # shellcheck disable=SC2154
 
+ #
  # Script For Building Android arm64 Kernel
  #
  # Copyright (c) 2018-2021 Panchajanya1999 <rsk52959@gmail.com>
@@ -20,6 +21,7 @@
  #
 
 # Kernel building script
+set -e
 
 # Function to show an informational message
 msger()
@@ -52,7 +54,7 @@ VARIANT=HMP
 BASE=EAS
 
 # Changelogs
-CL_URL="https://github.com/Tiktodz/android_kernel_asus_sdm636/commits/darkonah"
+CL_URL="https://github.com/Tiktodz/android_kernel_asus_sdm636/commits/codelinaro-eas"
 
 # The name of the Kernel, to name the ZIP
 ZIPNAME="$KERNELNAME-$BASE-$VARIANT"
@@ -76,14 +78,14 @@ DEFCONFIG=X00TD_defconfig
 
 # Specify compiler.
 # 'sdclang' or 'gcc' or 'eva'
-COMPILER=gcc
+COMPILER=sdclang
 
 # Build modules. 0 = NO | 1 = YES
 MODULES=0
 
 # Specify linker.
 # 'ld.lld'(default) Change to 'ld.bfd' for GCC compiler
-LINKER=ld.bfd
+LINKER=ld.lld
 
 # Clean source prior building. 1 is NO(default) | 0 is YES
 INCREMENTAL=1

@@ -2,7 +2,7 @@ version: 2.1
 jobs:
   compile:
    docker:
-      - image: debian:bookworm-slim
+      - image: fedora:latest
    steps:
       - run:
           shell: /bin/bash

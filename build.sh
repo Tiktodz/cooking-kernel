@@ -211,7 +211,7 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%H%M")
 	elif [ $COMPILER = "sdclang" ]
 	then
 		msger -n "|| Cloning SDClang ||"
-		git clone --depth=1 https://github.com/RyuujiX/SDClang -b 14 sdclang
+		git clone --depth=1 https://gitlab.com/VoidUI/snapdragon-clang sdclang
 
   		msger -n "|| Cloning GCC 4.9 ||"
 		git clone --depth=1 https://github.com/Kneba/aarch64-linux-android-4.9 gcc64

@@ -5,7 +5,6 @@ jobs:
       - image: archlinux:latest
     steps:
       - run:
-          shell: /bin/bash
           command: |
             pacman -Sy --noconfirm sudo && sudo pacman -Sy --noconfirm base-devel bc bison ncurses lld llvm libelf python ca-certificates curl flex clang gcc git wget zip zstd make openssl tzdata jdk-openjdk
             git clone --depth=1 --recursive https://github.com/Tiktodz/android_kernel_asus_sdm636 -b tom/eas kernel && cd kernel

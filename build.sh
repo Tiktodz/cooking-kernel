@@ -54,7 +54,7 @@ VARIANT=EAS
 BASE=CLO
 
 # Changelogs
-CL_URL="https://github.com/Tiktodz/android_kernel_asus_sdm636/commits/codelinaro-eas"
+CL_URL="https://github.com/Tiktodz/android_kernel_asus_sdm636/commits/tom/eas"
 
 # The name of the Kernel, to name the ZIP
 ZIPNAME="$KERNELNAME-$BASE-$VARIANT"
@@ -77,8 +77,8 @@ DEVICE="X00TD"
 DEFCONFIG=X00TD_defconfig
 
 # Specify compiler.
-# 'sdclang' or 'gcc' or 'eva'
-COMPILER=sdclang
+# 'sdclang' or 'gcc' or 'ew'
+COMPILER=ew
 
 # Build modules. 0 = NO | 1 = YES
 MODULES=0
@@ -198,15 +198,13 @@ DATE=$(TZ=Asia/Jakarta date +"%Y%m%d-%H%M")
 		GCC64_DIR=$KERNEL_DIR/gcc64
 		GCC32_DIR=$KERNEL_DIR/gcc32
 
-	elif [ $COMPILER = "eva" ]
+	elif [ $COMPILER = "ew" ]
 	then
-		msger -n "|| Cloning eva GCC ||"
-		git clone --depth=1 https://github.com/najahiiii/aarch64-linux-gnu.git -b linaro8-20190402 gcc64
-		git clone --depth=1 https://github.com/innfinite4evr/android-prebuilts-gcc-linux-x86-arm-arm-eabi-7.2.git -b master gcc32
+		msger -n "|| Cloning ElectroWizard clang ||"
+   		git clone --depth=1 https://gitlab.com/Tiktodz/electrowizard-clang.git -b 16 --single-branch ewclang
   
-  		# Toolchain Directory defaults to gcc
-		GCC64_DIR=$KERNEL_DIR/gcc64
-		GCC32_DIR=$KERNEL_DIR/gcc32
+		# Toolchain Directory defaults to ewclang
+		TC_DIR=$KERNEL_DIR/ewclang
 
 	elif [ $COMPILER = "sdclang" ]
 	then
@@ -252,10 +250,10 @@ exports()
 	then
 		KBUILD_COMPILER_STRING=$("$GCC64_DIR"/bin/aarch64-linux-android-gcc --version | head -n 1)
 		PATH=$GCC64_DIR/bin/:$GCC32_DIR/bin/:/usr/bin:$PATH
-	elif [ $COMPILER = "eva" ]
+	elif [ $COMPILER = "ew" ]
 	then
-		KBUILD_COMPILER_STRING="Linaro GCC 8.3-2019.03~dev"
-		PATH=$GCC64_DIR/bin/:$GCC32_DIR/bin/:/usr/bin:$PATH
+		KBUILD_COMPILER_STRING="$($TC_DIR/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')"
+		PATH="$TC_DIR/bin:$PATH"
 	fi
 
 	BOT_MSG_URL="https://api.telegram.org/bot$TG_TOKEN/sendMessage"
@@ -342,11 +340,25 @@ build_kernel()
 			OBJCOPY=aarch64-linux-android-objcopy \
 			LD=aarch64-linux-android-$LINKER
 		)
-	elif [ $COMPILER = "eva" ]
+	elif [ $COMPILER = "ew" ]
 	then
 		MAKE+=(
-			CROSS_COMPILE_ARM32=arm-eabi- \
-			CROSS_COMPILE=aarch64-linux-gnu-
+			ARCH=$ARCH \
+			SUBARCH=$ARCH \
+			AS="$TC_DIR/bin/llvm-as" \
+			CC="$TC_DIR/bin/clang" \
+			HOSTCC="$TC_DIR/bin/clang" \
+			HOSTCXX="$TC_DIR/bin/clang++" \
+			LD="$TC_DIR/bin/ld.lld" \
+			AR="$TC_DIR/bin/llvm-ar" \
+			NM="$TC_DIR/bin/llvm-nm" \
+			STRIP="$TC_DIR/bin/llvm-strip" \
+			OBJCOPY="$TC_DIR/bin/llvm-objcopy" \
+			OBJDUMP="$TC_DIR/bin/llvm-objdump" \
+			CLANG_TRIPLE="$TC_DIR/bin/aarch64-linux-gnu-" \
+			CROSS_COMPILE="$TC_DIR/bin/clang" \
+			CROSS_COMPILE_COMPAT="$TC_DIR/bin/clang" \
+			CROSS_COMPILE_ARM32="$TC_DIR/bin/clang"
 		)
 	fi
 

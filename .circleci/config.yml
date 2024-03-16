@@ -2,10 +2,30 @@ version: 2.1
 jobs:
   compile:
    docker:
-      - image: wizardprjkt/build:kernel
+      - image: fedora:latest
    steps:
       - run:
           command: |
+            dnf install bc \
+            binutils-devel \
+            bison \
+            ccache \
+            clang \
+            cmake \
+            elfutils-libelf-devel \
+            flex \
+            gcc \
+            gcc-c++ \
+            git \
+            lld \
+            make \
+            ninja-build \
+            openssl-devel \
+            python3 \
+            texinfo-tex \
+            uboot-tools \
+            xz \
+            zlib-devel
             git clone --depth=1 --recursive https://github.com/Tiktodz/android_kernel_asus_sdm636 -b tom/hmp kernel && cd kernel
             bash build.sh
           no_output_timeout : 1h

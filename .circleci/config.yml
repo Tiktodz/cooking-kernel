@@ -2,54 +2,10 @@ version: 2.1
 jobs:
   compile:
    docker:
-      - image: fedora:latest
+      - image: wizardprjkt/build:kernel
    steps:
       - run:
           command: |
-            set -x \
-            && dnf update -y \
-            && dnf -y install \
-            bash-completion \
-            bc \
-            binutils-devel \
-            bison \
-            ccache \
-            clang \
-            cmake \
-            elfutils-libelf-devel \
-            flex \
-            gcc \
-            gcc-c++ \
-            git \
-            lld \
-            make \
-            ninja-build \
-            openssl-devel \
-            python3 \
-            texinfo-tex \
-            uboot-tools \
-            xz \
-            zlib-devel \
-            file \
-            jq \
-            openssh-server \
-            redhat-lsb-core \
-            subversion \
-            sudo \
-            vim-enhanced \
-            wget \
-            zstd \
-            # Install compilation tools
-            && dnf -y install @development-tools \
-            && dnf -y group install "C Development Tools and Libraries" \
-            && echo ". /etc/bash_completion" >> /root/.bashrc \
-            # Install the latest git
-            && dnf -y install \ 
-            expat-devel \
-            gnutls-devel \
-            libcurl-devel \
-            openssl-devel \
-            zlib-devel || exit 1
             git clone --depth=1 --recursive https://github.com/Tiktodz/android_kernel_asus_sdm636 -b tom/hmp kernel && cd kernel
             bash build.sh
           no_output_timeout : 1h

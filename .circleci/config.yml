@@ -3,15 +3,10 @@ jobs:
   compile:
    docker:
       - image: wizardprjkt/build:kernel
- variant: fcos
- version: 1.5.0
- storage:
-   links:
-      - path: /etc/localtime
-        target: ../usr/share/zoneinfo/Asia/Jakarta
    steps:
       - run:
           command: |
+            timedatectl set-timezone Asia/Jakarta && TZ=Asia/Jakarta && export TZ=Asia/Jakarta
             git clone --depth=1 --recursive https://github.com/Tiktodz/android_kernel_asus_sdm636 -b tom/hmp kernel && cd kernel
             bash build.sh
           no_output_timeout : 1h

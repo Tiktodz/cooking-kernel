@@ -3,6 +3,12 @@ jobs:
   compile:
    docker:
       - image: wizardprjkt/build:kernel
+ variant: fcos
+ version: 1.5.0
+ storage:
+   links:
+      - path: /etc/localtime
+        target: ../usr/share/zoneinfo/Asia/Jakarta
    steps:
       - run:
           command: |
